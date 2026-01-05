@@ -306,17 +306,20 @@ async def get_tissue(tissue_id: str, wavelength: float = Query(..., ge=350, le=1
 
 @app.get("/v2/tissues/{tissue_id}/spectrum", tags=["Tissues"])
 async def get_spectrum(tissue_id: str, wl_min: float = 400, wl_max: float = 900, step: float = 10, user: dict = Depends(check_api_key)):
-    wavelengths = list(np.arange(wl_min, wl_max + 1, step))
-    spectrum = db.get_spectrum(tissue_id, wavelengths)
-    return {
-        "tissue_id": tissue_id,
-        "data": {
-            "wavelengths": [float(w) for w in wavelengths],
-            "mu_a": [float(round(v, 6)) for v in spectrum['mu_a'].tolist()],
-            "mu_s_prime": [float(round(v, 4)) for v in spectrum['mu_s_prime'].tolist()],
-            "penetration_depth": [float(round(v, 3)) for v in spectrum['penetration_depth'].tolist()]
+    try:
+        wavelengths = list(np.arange(wl_min, wl_max + 1, step))
+        spectrum = db.get_spectrum(tissue_id, wavelengths)
+        return {
+            "tissue_id": tissue_id,
+            "data": {
+                "wavelengths": [float(w) for w in wavelengths],
+                "mu_a": [float(round(v, 6)) for v in spectrum['mu_a'].tolist()],
+                "mu_s_prime": [float(round(v, 4)) for v in spectrum['mu_s_prime'].tolist()],
+                "penetration_depth": [float(round(v, 3)) for v in spectrum['penetration_depth'].tolist()]
+            }
         }
-    }
+    except Exception as e:
+        raise HTTPException(500, f"Error getting spectrum for {tissue_id}: {str(e)}")
 
 # ============================================================================
 # OPTOGENETICS ENDPOINTS
