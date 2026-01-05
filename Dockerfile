@@ -26,13 +26,29 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy all application code
+# Core
 COPY photonpath.py .
-COPY tissue_optical_properties.json .
-COPY advanced_calculations.py .
-COPY optogenetics_db.json .
 COPY api_v2.py .
-COPY visualizations.py .
+COPY advanced_calculations.py .
+
+# Databases
+COPY tissue_optical_properties.json .
+COPY optogenetics_db.json .
+
+# Modules
+COPY monte_carlo.py .
+COPY fluorescence.py .
+COPY multiwavelength.py .
+COPY oximetry.py .
+COPY pdt_dosimetry.py .
+
+# SDKs (optional, for distribution)
+COPY photonpath_sdk.py .
+COPY PhotonPathClient.m .
+
+# Documentation
+COPY README.md .
 
 # Create non-root user
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
