@@ -196,60 +196,119 @@ class EmailService:
             return False
     
     # ========================================================================
-    # PROFESSIONAL EMAIL TEMPLATES
+    # EMAIL TEMPLATES - DESIGN CLAIR
     # ========================================================================
     
-    def _base_template(self, header_gradient: str, header_emoji: str, header_title: str, header_subtitle: str, body_content: str) -> str:
-        """Template de base professionnel."""
-        return f"""
+    def send_welcome_email(self, to_email: str, api_key: str) -> bool:
+        """📧 Email de bienvenue avec clé API - Design clair."""
+        
+        html = f"""
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{header_title}</title>
+    <title>Bienvenue sur PhotonPath</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0f; line-height: 1.6;">
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7fa; line-height: 1.6;">
     
-    <!-- Wrapper -->
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0a0a0f;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f7fa;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
                 
-                <!-- Container -->
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%;">
                     
                     <!-- Logo -->
                     <tr>
-                        <td align="center" style="padding-bottom: 30px;">
-                            <table role="presentation" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td style="background: linear-gradient(135deg, #00ffc8 0%, #7c3aed 50%, #00d4ff 100%); -webkit-background-clip: text; background-clip: text;">
-                                        <span style="font-size: 32px; font-weight: 800; color: #00ffc8; letter-spacing: -1px;">⚡ PhotonPath</span>
-                                    </td>
-                                </tr>
-                            </table>
+                        <td align="center" style="padding-bottom: 25px;">
+                            <span style="font-size: 26px; font-weight: 700; color: #1a1a2e;">⚡ <span style="color: #0891b2;">Photon</span><span style="color: #1a1a2e;">Path</span></span>
                         </td>
                     </tr>
                     
                     <!-- Main Card -->
                     <tr>
                         <td>
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: linear-gradient(145deg, #12121a 0%, #1a1a2e 100%); border-radius: 24px; overflow: hidden; border: 1px solid rgba(124, 58, 237, 0.3); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 100px rgba(124, 58, 237, 0.1);">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
                                 
-                                <!-- Header -->
+                                <!-- Header Gradient -->
                                 <tr>
-                                    <td style="background: {header_gradient}; padding: 50px 40px; text-align: center; position: relative;">
-                                        <div style="font-size: 56px; margin-bottom: 15px;">{header_emoji}</div>
-                                        <h1 style="margin: 0; font-size: 32px; font-weight: 700; color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">{header_title}</h1>
-                                        <p style="margin: 12px 0 0 0; font-size: 16px; color: rgba(255,255,255,0.85); font-weight: 400;">{header_subtitle}</p>
+                                    <td style="background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%); padding: 40px 30px; text-align: center;">
+                                        <div style="font-size: 42px; margin-bottom: 10px;">🎉</div>
+                                        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">Bienvenue !</h1>
+                                        <p style="margin: 8px 0 0 0; font-size: 15px; color: rgba(255,255,255,0.9);">Votre compte PhotonPath est prêt</p>
                                     </td>
                                 </tr>
                                 
                                 <!-- Body -->
                                 <tr>
-                                    <td style="padding: 45px 40px;">
-                                        {body_content}
+                                    <td style="padding: 35px 30px;">
+                                        
+                                        <p style="margin: 0 0 25px 0; font-size: 15px; color: #4a5568; line-height: 1.7;">
+                                            Merci de rejoindre PhotonPath ! Votre compte est maintenant <strong style="color: #10b981;">actif</strong> et prêt à utiliser.
+                                        </p>
+                                        
+                                        <!-- API Key Box -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
+                                            <tr>
+                                                <td style="background: #f0fdf4; border: 2px solid #10b981; border-radius: 12px; padding: 20px;">
+                                                    <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #059669; text-transform: uppercase; letter-spacing: 1px;">
+                                                        🔑 VOTRE CLÉ API
+                                                    </p>
+                                                    <p style="margin: 0; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; color: #065f46; background: #ffffff; padding: 14px; border-radius: 8px; word-break: break-all; border: 1px solid #d1fae5;">
+                                                        {api_key}
+                                                    </p>
+                                                    <p style="margin: 12px 0 0 0; font-size: 12px; color: #ca8a04;">
+                                                        ⚠️ Gardez cette clé secrète ! Ne la partagez jamais publiquement.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Quick Start Code -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
+                                            <tr>
+                                                <td style="background: #1e293b; border-radius: 12px; padding: 20px;">
+                                                    <p style="margin: 0 0 12px 0; font-size: 13px; font-weight: 600; color: #e2e8f0;">
+                                                        ⚡ Démarrage rapide
+                                                    </p>
+                                                    <div style="font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 12px; line-height: 1.8;">
+                                                        <p style="margin: 0; color: #64748b;"># Python</p>
+                                                        <p style="margin: 0;"><span style="color: #c084fc;">import</span> <span style="color: #22d3ee;">requests</span></p>
+                                                        <p style="margin: 10px 0 0 0;"><span style="color: #e2e8f0;">response</span> <span style="color: #64748b;">=</span> <span style="color: #22d3ee;">requests</span><span style="color: #e2e8f0;">.</span><span style="color: #fbbf24;">get</span><span style="color: #e2e8f0;">(</span></p>
+                                                        <p style="margin: 0; padding-left: 20px;"><span style="color: #a5f3fc;">"https://photonpath-api-production.up.railway.app/v2/tissues"</span><span style="color: #e2e8f0;">,</span></p>
+                                                        <p style="margin: 0; padding-left: 20px;"><span style="color: #e2e8f0;">headers=</span><span style="color: #fbbf24;">{{"X-API-Key"</span><span style="color: #e2e8f0;">:</span> <span style="color: #a5f3fc;">"VOTRE_CLÉ_API"</span><span style="color: #fbbf24;">}}</span></p>
+                                                        <p style="margin: 0;"><span style="color: #e2e8f0;">)</span></p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- CTA Button -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="padding: 20px 0;">
+                                                    <a href="https://photonpath-api-production.up.railway.app/docs" 
+                                                       style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, #06b6d4, #0891b2); color: #ffffff; font-weight: 600; text-decoration: none; border-radius: 10px; font-size: 14px; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);">
+                                                        📖 Voir la Documentation
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Plan Info -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                                            <tr>
+                                                <td width="50%">
+                                                    <p style="margin: 0 0 5px 0; font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px;">Plan actuel</p>
+                                                    <p style="margin: 0; font-size: 14px; color: #1f2937; font-weight: 600;">🔬 Spark (Gratuit)</p>
+                                                </td>
+                                                <td width="50%">
+                                                    <p style="margin: 0 0 5px 0; font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px;">Limites</p>
+                                                    <p style="margin: 0; font-size: 14px; color: #1f2937; font-weight: 600;">100 req/jour</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
                                     </td>
                                 </tr>
                                 
@@ -259,22 +318,9 @@ class EmailService:
                     
                     <!-- Footer -->
                     <tr>
-                        <td align="center" style="padding-top: 35px;">
-                            <table role="presentation" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td style="padding: 0 15px;">
-                                        <a href="https://photonpath-api-production.up.railway.app/docs" style="color: #8896a6; font-size: 13px; text-decoration: none;">Documentation</a>
-                                    </td>
-                                    <td style="color: #3a3a4a;">|</td>
-                                    <td style="padding: 0 15px;">
-                                        <a href="mailto:contact@banastechnologie.cloud" style="color: #8896a6; font-size: 13px; text-decoration: none;">Support</a>
-                                    </td>
-                                </tr>
-                            </table>
-                            <p style="margin: 20px 0 0 0; font-size: 12px; color: #4a4a5a;">
-                                © 2025 PhotonPath by BanasTechnologie<br>
-                                <span style="color: #3a3a4a;">Plateforme de simulation biophotonique</span>
-                            </p>
+                        <td align="center" style="padding-top: 30px;">
+                            <p style="margin: 0; font-size: 13px; color: #6b7280;">© 2025 PhotonPath by BanasTechnologie</p>
+                            <p style="margin: 5px 0 0 0; font-size: 12px; color: #9ca3af;">API Biophotonique pour la Recherche</p>
                         </td>
                     </tr>
                     
@@ -286,103 +332,6 @@ class EmailService:
 </body>
 </html>
 """
-    
-    def send_welcome_email(self, to_email: str, api_key: str) -> bool:
-        """📧 Email de bienvenue avec clé API."""
-        
-        body_content = f"""
-        <p style="margin: 0 0 25px 0; font-size: 17px; color: #c8c8d0; line-height: 1.7;">
-            Merci de rejoindre <strong style="color: #00ffc8;">PhotonPath</strong> ! Votre compte est maintenant 
-            <span style="background: linear-gradient(90deg, #00ffc8, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">actif</span> 
-            et prêt à être utilisé.
-        </p>
-        
-        <!-- API Key Box -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 30px 0;">
-            <tr>
-                <td style="background: linear-gradient(135deg, rgba(0, 255, 200, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%); border: 2px solid #00ffc8; border-radius: 16px; padding: 25px;">
-                    <p style="margin: 0 0 12px 0; font-size: 11px; font-weight: 700; color: #00ffc8; text-transform: uppercase; letter-spacing: 2px;">
-                        🔑 Votre Clé API
-                    </p>
-                    <p style="margin: 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; color: #ffffff; background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 10px; word-break: break-all; border: 1px solid rgba(0, 255, 200, 0.2);">
-                        {api_key}
-                    </p>
-                    <p style="margin: 15px 0 0 0; font-size: 12px; color: #ff6b6b;">
-                        ⚠️ Conservez cette clé en lieu sûr — ne la partagez jamais !
-                    </p>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- Plan Info -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
-            <tr>
-                <td style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td width="50%" style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <span style="color: #6b6b7a; font-size: 13px;">Plan</span>
-                            </td>
-                            <td width="50%" style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
-                                <span style="color: #00ffc8; font-weight: 600; font-size: 14px;">🔬 Spark (Gratuit)</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <span style="color: #6b6b7a; font-size: 13px;">Requêtes/jour</span>
-                            </td>
-                            <td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
-                                <span style="color: #ffffff; font-weight: 500; font-size: 14px;">100</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0;">
-                                <span style="color: #6b6b7a; font-size: 13px;">Monte Carlo/jour</span>
-                            </td>
-                            <td style="padding: 8px 0; text-align: right;">
-                                <span style="color: #ffffff; font-weight: 500; font-size: 14px;">10</span>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- Quick Start -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
-            <tr>
-                <td style="background: #0d1117; border-radius: 12px; padding: 20px; border: 1px solid #30363d;">
-                    <p style="margin: 0 0 12px 0; font-size: 13px; font-weight: 600; color: #c9d1d9;">
-                        ⚡ Quick Start
-                    </p>
-                    <code style="display: block; font-family: 'SF Mono', monospace; font-size: 12px; color: #7ee787; line-height: 1.8;">
-                        <span style="color: #ff7b72;">curl</span> <span style="color: #a5d6ff;">-H</span> <span style="color: #a5d6ff;">"X-API-Key: {api_key[:20]}..."</span> \\<br>
-                        &nbsp;&nbsp;<span style="color: #79c0ff;">https://photonpath-api-production.up.railway.app/v2/tissues</span>
-                    </code>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- CTA Button -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-                <td align="center" style="padding: 25px 0 10px 0;">
-                    <a href="https://photonpath-api-production.up.railway.app/docs" 
-                       style="display: inline-block; padding: 16px 45px; background: linear-gradient(135deg, #00ffc8 0%, #7c3aed 50%, #00d4ff 100%); color: #0a0a0f; font-weight: 700; text-decoration: none; border-radius: 12px; font-size: 15px; box-shadow: 0 10px 30px rgba(0, 255, 200, 0.3); text-transform: uppercase; letter-spacing: 1px;">
-                        📖 Explorer la Documentation
-                    </a>
-                </td>
-            </tr>
-        </table>
-        """
-        
-        html = self._base_template(
-            header_gradient="linear-gradient(135deg, #00ffc8 0%, #00d4aa 30%, #7c3aed 70%, #6366f1 100%)",
-            header_emoji="🎉",
-            header_title="Bienvenue !",
-            header_subtitle="Votre compte PhotonPath est prêt",
-            body_content=body_content
-        )
         
         return self.send_email(to_email, "🚀 Bienvenue sur PhotonPath - Votre clé API", html)
     
@@ -390,183 +339,308 @@ class EmailService:
         """📧 Email confirmation abonnement."""
         
         plan_info = {
-            "spark": {"name": "Spark", "emoji": "🔬", "price": "Gratuit", "color": "#00ffc8"},
-            "photon": {"name": "Photon", "emoji": "💡", "price": "29€/mois", "color": "#fbbf24"},
-            "beam": {"name": "Beam", "emoji": "🔦", "price": "99€/mois", "color": "#f97316"},
-            "laser": {"name": "Laser", "emoji": "⚡", "price": "299€/mois", "color": "#ef4444"},
-            "fusion": {"name": "Fusion", "emoji": "🌟", "price": "Sur devis", "color": "#a855f7"}
+            "spark": {"name": "Spark", "emoji": "🔬", "price": "Gratuit", "requests": "100"},
+            "photon": {"name": "Photon", "emoji": "💡", "price": "29€/mois", "requests": "2,000"},
+            "beam": {"name": "Beam", "emoji": "🔦", "price": "99€/mois", "requests": "15,000"},
+            "laser": {"name": "Laser", "emoji": "⚡", "price": "299€/mois", "requests": "100,000"},
+            "fusion": {"name": "Fusion", "emoji": "🌟", "price": "Sur devis", "requests": "Illimité"}
         }
         info = plan_info.get(plan, plan_info["spark"])
         
-        body_content = f"""
-        <p style="margin: 0 0 25px 0; font-size: 17px; color: #c8c8d0; line-height: 1.7;">
-            Votre abonnement <strong style="color: {info['color']};">{info['name']}</strong> est maintenant actif !
-            Profitez de toutes les fonctionnalités de votre nouveau plan.
-        </p>
-        
-        <!-- Plan Summary -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
-            <tr>
-                <td style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 20px; border: 1px solid {info['color']}40;">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td style="padding: 8px 0; text-align: center;">
-                                <span style="font-size: 48px;">{info['emoji']}</span>
-                                <p style="margin: 10px 0 5px 0; font-size: 24px; font-weight: 700; color: {info['color']};">Plan {info['name']}</p>
-                                <p style="margin: 0; font-size: 16px; color: #6b6b7a;">{info['price']}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- New API Key -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 30px 0;">
-            <tr>
-                <td style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%); border: 2px solid #fbbf24; border-radius: 16px; padding: 25px;">
-                    <p style="margin: 0 0 12px 0; font-size: 11px; font-weight: 700; color: #fbbf24; text-transform: uppercase; letter-spacing: 2px;">
-                        🔑 Nouvelle Clé API
-                    </p>
-                    <p style="margin: 0; font-family: 'SF Mono', monospace; font-size: 14px; color: #ffffff; background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 10px; word-break: break-all; border: 1px solid rgba(251, 191, 36, 0.2);">
-                        {api_key}
-                    </p>
-                    <p style="margin: 15px 0 0 0; font-size: 12px; color: #ff6b6b;">
-                        ⚠️ Cette clé remplace votre ancienne clé !
-                    </p>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- CTA -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-                <td align="center" style="padding: 25px 0 10px 0;">
-                    <a href="https://photonpath-api-production.up.railway.app/docs" 
-                       style="display: inline-block; padding: 16px 45px; background: linear-gradient(135deg, {info['color']}, #7c3aed); color: #ffffff; font-weight: 700; text-decoration: none; border-radius: 12px; font-size: 15px; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);">
-                        🚀 Commencer à utiliser l'API
-                    </a>
-                </td>
-            </tr>
-        </table>
-        """
-        
-        html = self._base_template(
-            header_gradient="linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)",
-            header_emoji="✅",
-            header_title="Abonnement Activé !",
-            header_subtitle=f"Plan {info['name']} - {info['price']}",
-            body_content=body_content
-        )
+        html = f"""
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background-color: #f4f7fa; line-height: 1.6;">
+    
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f7fa;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%;">
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 25px;">
+                            <span style="font-size: 26px; font-weight: 700; color: #1a1a2e;">⚡ <span style="color: #0891b2;">Photon</span><span style="color: #1a1a2e;">Path</span></span>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Card -->
+                    <tr>
+                        <td>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                                
+                                <!-- Header -->
+                                <tr>
+                                    <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
+                                        <div style="font-size: 42px; margin-bottom: 10px;">✅</div>
+                                        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">Abonnement Activé !</h1>
+                                        <p style="margin: 8px 0 0 0; font-size: 15px; color: rgba(255,255,255,0.9);">{info['emoji']} Plan {info['name']} - {info['price']}</p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Body -->
+                                <tr>
+                                    <td style="padding: 35px 30px;">
+                                        
+                                        <p style="margin: 0 0 25px 0; font-size: 15px; color: #4a5568; line-height: 1.7;">
+                                            Votre abonnement <strong style="color: #059669;">{info['name']}</strong> est maintenant actif ! 
+                                            Profitez de <strong>{info['requests']} requêtes/jour</strong>.
+                                        </p>
+                                        
+                                        <!-- New API Key Box -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
+                                            <tr>
+                                                <td style="background: #fefce8; border: 2px solid #eab308; border-radius: 12px; padding: 20px;">
+                                                    <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #a16207; text-transform: uppercase; letter-spacing: 1px;">
+                                                        🔑 NOUVELLE CLÉ API
+                                                    </p>
+                                                    <p style="margin: 0; font-family: monospace; font-size: 13px; color: #854d0e; background: #ffffff; padding: 14px; border-radius: 8px; word-break: break-all; border: 1px solid #fef08a;">
+                                                        {api_key}
+                                                    </p>
+                                                    <p style="margin: 12px 0 0 0; font-size: 12px; color: #dc2626;">
+                                                        ⚠️ Cette clé remplace votre ancienne clé !
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- CTA -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="padding: 20px 0;">
+                                                    <a href="https://photonpath-api-production.up.railway.app/docs" 
+                                                       style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; font-weight: 600; text-decoration: none; border-radius: 10px; font-size: 14px;">
+                                                        🚀 Commencer à utiliser l'API
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding-top: 30px;">
+                            <p style="margin: 0; font-size: 13px; color: #6b7280;">© 2025 PhotonPath by BanasTechnologie</p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>
+"""
         
         return self.send_email(to_email, f"✅ Abonnement {info['name']} activé - PhotonPath", html)
     
     def send_subscription_cancelled(self, to_email: str) -> bool:
         """📧 Email annulation."""
         
-        body_content = """
-        <p style="margin: 0 0 25px 0; font-size: 17px; color: #c8c8d0; line-height: 1.7;">
-            Votre abonnement a été annulé. Vous êtes maintenant sur le plan 
-            <strong style="color: #00ffc8;">Spark (gratuit)</strong>.
-        </p>
-        
-        <!-- What changes -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
-            <tr>
-                <td style="background: rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 20px; border: 1px solid rgba(239, 68, 68, 0.3);">
-                    <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #ef4444;">
-                        ❌ Ce qui change
-                    </p>
-                    <ul style="margin: 0; padding-left: 20px; color: #c8c8d0; font-size: 14px;">
-                        <li>Limité à 100 requêtes/jour</li>
-                        <li>10 simulations Monte Carlo/jour</li>
-                        <li>Accès aux fonctionnalités de base uniquement</li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- What you keep -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
-            <tr>
-                <td style="background: rgba(0, 255, 200, 0.1); border-radius: 12px; padding: 20px; border: 1px solid rgba(0, 255, 200, 0.3);">
-                    <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #00ffc8;">
-                        ✅ Ce que vous gardez
-                    </p>
-                    <ul style="margin: 0; padding-left: 20px; color: #c8c8d0; font-size: 14px;">
-                        <li>Accès à l'API avec votre clé existante</li>
-                        <li>Documentation complète</li>
-                        <li>Support communautaire</li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        
-        <p style="margin: 25px 0 0 0; font-size: 15px; color: #8896a6; text-align: center;">
-            Vous pouvez réactiver votre abonnement à tout moment.
-        </p>
-        """
-        
-        html = self._base_template(
-            header_gradient="linear-gradient(135deg, #6b7280 0%, #4b5563 100%)",
-            header_emoji="😢",
-            header_title="Abonnement Annulé",
-            header_subtitle="Vous passez au plan Spark gratuit",
-            body_content=body_content
-        )
+        html = """
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background-color: #f4f7fa; line-height: 1.6;">
+    
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f7fa;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%;">
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 25px;">
+                            <span style="font-size: 26px; font-weight: 700; color: #1a1a2e;">⚡ <span style="color: #0891b2;">Photon</span><span style="color: #1a1a2e;">Path</span></span>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Card -->
+                    <tr>
+                        <td>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                                
+                                <!-- Header -->
+                                <tr>
+                                    <td style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); padding: 40px 30px; text-align: center;">
+                                        <div style="font-size: 42px; margin-bottom: 10px;">😢</div>
+                                        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">Abonnement Annulé</h1>
+                                        <p style="margin: 8px 0 0 0; font-size: 15px; color: rgba(255,255,255,0.9);">Vous passez au plan Spark gratuit</p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Body -->
+                                <tr>
+                                    <td style="padding: 35px 30px;">
+                                        
+                                        <p style="margin: 0 0 25px 0; font-size: 15px; color: #4a5568; line-height: 1.7;">
+                                            Votre abonnement a été annulé. Vous êtes maintenant sur le plan <strong style="color: #10b981;">Spark (gratuit)</strong>.
+                                        </p>
+                                        
+                                        <!-- What changes -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
+                                            <tr>
+                                                <td style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 15px;">
+                                                    <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 600; color: #dc2626;">❌ Ce qui change</p>
+                                                    <ul style="margin: 0; padding-left: 20px; color: #7f1d1d; font-size: 13px;">
+                                                        <li>Limité à 100 requêtes/jour</li>
+                                                        <li>10 simulations Monte Carlo/jour</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- What you keep -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
+                                            <tr>
+                                                <td style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 15px;">
+                                                    <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 600; color: #16a34a;">✅ Ce que vous gardez</p>
+                                                    <ul style="margin: 0; padding-left: 20px; color: #166534; font-size: 13px;">
+                                                        <li>Accès à l'API</li>
+                                                        <li>Documentation complète</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <p style="margin: 20px 0 0 0; font-size: 14px; color: #6b7280; text-align: center;">
+                                            Vous pouvez réactiver votre abonnement à tout moment.
+                                        </p>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding-top: 30px;">
+                            <p style="margin: 0; font-size: 13px; color: #6b7280;">© 2025 PhotonPath by BanasTechnologie</p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>
+"""
         
         return self.send_email(to_email, "😢 Abonnement annulé - PhotonPath", html)
     
     def send_payment_failed(self, to_email: str) -> bool:
         """📧 Email échec paiement."""
         
-        body_content = """
-        <p style="margin: 0 0 25px 0; font-size: 17px; color: #c8c8d0; line-height: 1.7;">
-            Nous n'avons pas pu traiter votre dernier paiement. 
-            <strong style="color: #ef4444;">Votre abonnement risque d'être suspendu.</strong>
-        </p>
-        
-        <!-- Alert Box -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 25px 0;">
-            <tr>
-                <td style="background: rgba(239, 68, 68, 0.15); border-radius: 12px; padding: 25px; border: 1px solid rgba(239, 68, 68, 0.4);">
-                    <p style="margin: 0 0 15px 0; font-size: 15px; font-weight: 600; color: #ef4444;">
-                        ⚠️ Raisons possibles
-                    </p>
-                    <ul style="margin: 0; padding-left: 20px; color: #c8c8d0; font-size: 14px; line-height: 1.8;">
-                        <li>Carte expirée ou invalide</li>
-                        <li>Fonds insuffisants</li>
-                        <li>Transaction bloquée par votre banque</li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- CTA -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-                <td align="center" style="padding: 25px 0 10px 0;">
-                    <a href="mailto:contact@banastechnologie.cloud" 
-                       style="display: inline-block; padding: 16px 45px; background: linear-gradient(135deg, #ef4444, #dc2626); color: #ffffff; font-weight: 700; text-decoration: none; border-radius: 12px; font-size: 15px; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);">
-                        📧 Nous Contacter
-                    </a>
-                </td>
-            </tr>
-        </table>
-        
-        <p style="margin: 25px 0 0 0; font-size: 13px; color: #6b6b7a; text-align: center;">
-            Si vous avez des questions, contactez-nous à<br>
-            <a href="mailto:contact@banastechnologie.cloud" style="color: #00ffc8;">contact@banastechnologie.cloud</a>
-        </p>
-        """
-        
-        html = self._base_template(
-            header_gradient="linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%)",
-            header_emoji="⚠️",
-            header_title="Échec de Paiement",
-            header_subtitle="Action requise pour maintenir votre accès",
-            body_content=body_content
-        )
+        html = """
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background-color: #f4f7fa; line-height: 1.6;">
+    
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f7fa;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%;">
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 25px;">
+                            <span style="font-size: 26px; font-weight: 700; color: #1a1a2e;">⚡ <span style="color: #0891b2;">Photon</span><span style="color: #1a1a2e;">Path</span></span>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Card -->
+                    <tr>
+                        <td>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                                
+                                <!-- Header -->
+                                <tr>
+                                    <td style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 40px 30px; text-align: center;">
+                                        <div style="font-size: 42px; margin-bottom: 10px;">⚠️</div>
+                                        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">Échec de Paiement</h1>
+                                        <p style="margin: 8px 0 0 0; font-size: 15px; color: rgba(255,255,255,0.9);">Action requise</p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Body -->
+                                <tr>
+                                    <td style="padding: 35px 30px;">
+                                        
+                                        <p style="margin: 0 0 25px 0; font-size: 15px; color: #4a5568; line-height: 1.7;">
+                                            Nous n'avons pas pu traiter votre dernier paiement. 
+                                            <strong style="color: #dc2626;">Votre abonnement risque d'être suspendu.</strong>
+                                        </p>
+                                        
+                                        <!-- Alert Box -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
+                                            <tr>
+                                                <td style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 15px;">
+                                                    <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 600; color: #dc2626;">Raisons possibles :</p>
+                                                    <ul style="margin: 0; padding-left: 20px; color: #7f1d1d; font-size: 13px;">
+                                                        <li>Carte expirée ou invalide</li>
+                                                        <li>Fonds insuffisants</li>
+                                                        <li>Transaction bloquée par la banque</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- CTA -->
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="padding: 20px 0;">
+                                                    <a href="mailto:contact@banastechnologie.cloud" 
+                                                       style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, #ef4444, #dc2626); color: #ffffff; font-weight: 600; text-decoration: none; border-radius: 10px; font-size: 14px;">
+                                                        📧 Nous Contacter
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding-top: 30px;">
+                            <p style="margin: 0; font-size: 13px; color: #6b7280;">© 2025 PhotonPath by BanasTechnologie</p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>
+"""
         
         return self.send_email(to_email, "⚠️ Échec de paiement - Action requise - PhotonPath", html)
 
@@ -606,10 +680,6 @@ if __name__ == "__main__":
     if service.enabled:
         print(f"\n✅ Provider: {service.config.provider}")
         print(f"   From: {service.config.from_email}")
-        
-        # Uncomment to test:
-        # result = service.send_welcome_email("test@example.com", "pk_test_123456789")
-        # print(f"   Test: {'✅ Sent' if result else '❌ Failed'}")
     else:
         print("\n⚠️ Email not configured")
         print("   Set RESEND_API_KEY or SMTP_* variables")
