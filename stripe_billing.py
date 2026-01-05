@@ -253,6 +253,7 @@ class StripeBilling:
     def create_customer(self, email: str, name: str = None, send_welcome_email: bool = True) -> Customer:
         """Create a new customer."""
         customer_id = f"cust_{secrets.token_hex(12)}"
+        api_key = f"pk_{secrets.token_hex(24)}"  # ← Générer AVANT d'utiliser
         
         # Create Stripe customer if enabled
         stripe_customer_id = None
@@ -261,9 +262,15 @@ class StripeBilling:
                 stripe_customer = stripe.Customer.create(
                     email=email,
                     name=name,
-                    metadata={"photonpath_id": customer_id}
+                    metadata={
+                        "photonpath_id": customer_id,
+                        "plan": "spark",
+                        "api_key": api_key,
+                        "created_via": "photonpath_api"
+                    }
                 )
                 stripe_customer_id = stripe_customer.id
+                print(f"✅ Stripe customer created: {stripe_customer_id}")
             except Exception as e:
                 print(f"⚠️ Failed to create Stripe customer: {e}")
         
@@ -272,7 +279,8 @@ class StripeBilling:
             id=customer_id,
             email=email,
             stripe_customer_id=stripe_customer_id,
-            plan=SubscriptionPlan.SPARK
+            plan=SubscriptionPlan.SPARK,
+            api_key=api_key  # ← Utiliser la clé générée
         )
         
         # Store customer
@@ -285,6 +293,7 @@ class StripeBilling:
                 from email_service import get_email_service
                 email_service = get_email_service()
                 email_service.send_welcome_email(email, customer.api_key)
+                print(f"✅ Welcome email sent to {email}")
             except Exception as e:
                 print(f"⚠️ Welcome email failed: {e}")
         
