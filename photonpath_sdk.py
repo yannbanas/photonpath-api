@@ -45,12 +45,12 @@ class PhotonPathClient:
     api_key : str
         Your API key (get one at photonpath.io)
     base_url : str
-        API base URL (default: https://api.photonpath.io)
+        API base URL (default: https://photonpath-api-production.up.railway.app)
     timeout : int
         Request timeout in seconds
     """
     
-    DEFAULT_URL = "http://localhost:8000"  # Change to production URL
+    DEFAULT_URL = "https://photonpath-api-production.up.railway.app"
     
     def __init__(
         self,
