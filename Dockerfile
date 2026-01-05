@@ -2,7 +2,7 @@
 # ==========================================
 # 
 # Build:  docker build -t photonpath-api .
-# Run:    docker run -p 8000:8000 photonpath-api
+# Run:    docker run -p 8000:8000 -e PORT=8000 photonpath-api
 # Test:   curl http://localhost:8000/health
 
 FROM python:3.11-slim
@@ -54,12 +54,14 @@ COPY README.md .
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
+# Default port (Railway will override with $PORT)
+ENV PORT=8000
+
 # Expose port
-EXPOSE 8000
+EXPOSE $PORT
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+# NO HEALTHCHECK - Let Railway handle it
+# HEALTHCHECK is removed because it causes issues with dynamic ports
 
-# Run the API
-CMD ["uvicorn", "api_v2:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the API with shell form to expand $PORT variable
+CMD uvicorn api_v2:app --host 0.0.0.0 --port $PORT
