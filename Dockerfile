@@ -8,8 +8,8 @@
 FROM python:3.11-slim
 
 LABEL maintainer="PhotonPath"
-LABEL version="2.0.0"
-LABEL description="Biophotonics Simulation Platform API"
+LABEL version="2.1.0"
+LABEL description="Biophotonics Simulation Platform API with Billing"
 
 # Set working directory
 WORKDIR /app
@@ -27,7 +27,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all application code
-# Core
+# =========================
+
+# Core API
 COPY photonpath.py .
 COPY api_v2.py .
 COPY advanced_calculations.py .
@@ -36,12 +38,18 @@ COPY advanced_calculations.py .
 COPY tissue_optical_properties.json .
 COPY optogenetics_db.json .
 
-# Modules
+# Simulation Modules
 COPY monte_carlo.py .
 COPY fluorescence.py .
 COPY multiwavelength.py .
 COPY oximetry.py .
 COPY pdt_dosimetry.py .
+
+# Billing & Rate Limiting
+COPY stripe_billing.py .
+COPY rate_limiter.py .
+COPY billing_endpoints.py .
+COPY email_service.py .
 
 # SDKs (optional, for distribution)
 COPY photonpath_sdk.py .
@@ -54,8 +62,9 @@ COPY README.md .
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
-# Default port (Railway will override with $PORT)
+# Environment variables (defaults - override in Railway)
 ENV PORT=8000
+ENV ENVIRONMENT=production
 
 # Expose port
 EXPOSE $PORT
