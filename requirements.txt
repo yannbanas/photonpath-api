@@ -1,0 +1,25 @@
+# PhotonPath API v2.0 - Requirements
+# ==================================
+
+# Core
+numpy>=1.24.0
+scipy>=1.10.0
+
+# API Framework
+fastapi>=0.100.0
+uvicorn[standard]>=0.22.0
+pydantic>=2.0.0
+
+# HTTP (for testing)
+httpx>=0.24.0
+
+# Optional: Visualization
+matplotlib>=3.7.0
+
+# Optional: GPU acceleration (uncomment if CUDA available)
+# numba>=0.57.0
+
+# Production (uncomment for deployment)
+# gunicorn>=21.0.0
+# redis>=4.5.0
+# stripe>=5.0.0

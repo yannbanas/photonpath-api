@@ -1,0 +1,3123 @@
+{
+  "_metadata": {
+    "name": "PhotonPath Tissue Optical Properties Database",
+    "version": "2.0.0",
+    "author": "Compiled from literature",
+    "description": "Extended optical properties database with tumors, organs, and specialized tissues",
+    "units": {
+      "wavelength": "nm",
+      "mu_a": "mm^-1 (absorption coefficient)",
+      "mu_s": "mm^-1 (scattering coefficient)",
+      "mu_s_prime": "mm^-1 (reduced scattering coefficient)",
+      "g": "dimensionless (anisotropy factor)",
+      "n": "dimensionless (refractive index)"
+    },
+    "references": {
+      "jacques_2013": "Jacques SL. Optical properties of biological tissues: a review. Phys Med Biol. 2013;58(11):R37-R61",
+      "sandell_2011": "Sandell JL, Zhu TC. A review of in-vivo optical properties of human tissues. J Biophotonics. 2011;4(11-12):773-787",
+      "bashkatov_2011": "Bashkatov AN, et al. Optical properties of human skin, subcutaneous and mucous tissues. J Phys D Appl Phys. 2005;38(15):2543",
+      "yaroslavsky_2002": "Yaroslavsky AN, et al. Optical properties of selected native and coagulated human brain tissues. Phys Med Biol. 2002;47(12):2059",
+      "vanderZee_1993": "Van der Zee P, et al. Optical properties of brain tissue. Proc SPIE. 1993;1888:454-465",
+      "cheong_1990": "Cheong WF, et al. A review of the optical properties of biological tissues. IEEE J Quantum Electron. 1990;26(12):2166-2185"
+    },
+    "equations": {
+      "mu_s_prime_wavelength": "mu_s_prime(\u03bb) = a * (\u03bb/500)^(-b)",
+      "mu_s_from_mu_s_prime": "mu_s = mu_s_prime / (1 - g)",
+      "penetration_depth": "\u03b4 = 1 / sqrt(3 * mu_a * (mu_a + mu_s_prime))"
+    }
+  },
+  "tissues": {
+    "brain_gray_matter": {
+      "name": "Brain Gray Matter",
+      "name_fr": "Mati\u00e8re Grise C\u00e9r\u00e9brale",
+      "category": "neural",
+      "water_content": 0.8,
+      "blood_volume_fraction": 0.04,
+      "description": "Cerebral cortex gray matter, high neuronal density",
+      "scattering_params": {
+        "a": 2.2,
+        "b": 1.0,
+        "f_rayleigh": 0.2,
+        "b_mie": 0.8,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.37,
+        "source": "yaroslavsky_2002"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.24,
+          "mu_s_prime": 2.75,
+          "g": 0.89
+        },
+        "450": {
+          "mu_a": 0.12,
+          "mu_s_prime": 2.45,
+          "g": 0.89
+        },
+        "480": {
+          "mu_a": 0.08,
+          "mu_s_prime": 2.3,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.05,
+          "mu_s_prime": 2.2,
+          "g": 0.9
+        },
+        "532": {
+          "mu_a": 0.04,
+          "mu_s_prime": 2.05,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.98,
+          "g": 0.9
+        },
+        "580": {
+          "mu_a": 0.06,
+          "mu_s_prime": 1.85,
+          "g": 0.9
+        },
+        "600": {
+          "mu_a": 0.03,
+          "mu_s_prime": 1.76,
+          "g": 0.91
+        },
+        "630": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.65,
+          "g": 0.91
+        },
+        "650": {
+          "mu_a": 0.022,
+          "mu_s_prime": 1.58,
+          "g": 0.91
+        },
+        "700": {
+          "mu_a": 0.02,
+          "mu_s_prime": 1.42,
+          "g": 0.92
+        },
+        "750": {
+          "mu_a": 0.018,
+          "mu_s_prime": 1.3,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.016,
+          "mu_s_prime": 1.2,
+          "g": 0.92
+        },
+        "850": {
+          "mu_a": 0.018,
+          "mu_s_prime": 1.1,
+          "g": 0.93
+        },
+        "900": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.02,
+          "g": 0.93
+        },
+        "950": {
+          "mu_a": 0.035,
+          "mu_s_prime": 0.95,
+          "g": 0.93
+        },
+        "1000": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.88,
+          "g": 0.93
+        }
+      }
+    },
+    "brain_white_matter": {
+      "name": "Brain White Matter",
+      "name_fr": "Mati\u00e8re Blanche C\u00e9r\u00e9brale",
+      "category": "neural",
+      "water_content": 0.72,
+      "blood_volume_fraction": 0.02,
+      "description": "Myelinated axon bundles, high scattering due to myelin",
+      "scattering_params": {
+        "a": 9.1,
+        "b": 1.2,
+        "f_rayleigh": 0.4,
+        "b_mie": 0.6,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "yaroslavsky_2002"
+      },
+      "anisotropy": {
+        "g_default": 0.85,
+        "g_wavelength_dependent": false,
+        "source": "vanderZee_1993"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.15,
+          "mu_s_prime": 11.5,
+          "g": 0.83
+        },
+        "450": {
+          "mu_a": 0.08,
+          "mu_s_prime": 10.2,
+          "g": 0.84
+        },
+        "480": {
+          "mu_a": 0.05,
+          "mu_s_prime": 9.5,
+          "g": 0.85
+        },
+        "500": {
+          "mu_a": 0.04,
+          "mu_s_prime": 9.1,
+          "g": 0.85
+        },
+        "532": {
+          "mu_a": 0.03,
+          "mu_s_prime": 8.4,
+          "g": 0.85
+        },
+        "550": {
+          "mu_a": 0.035,
+          "mu_s_prime": 8.0,
+          "g": 0.86
+        },
+        "580": {
+          "mu_a": 0.04,
+          "mu_s_prime": 7.5,
+          "g": 0.86
+        },
+        "600": {
+          "mu_a": 0.025,
+          "mu_s_prime": 7.1,
+          "g": 0.86
+        },
+        "630": {
+          "mu_a": 0.02,
+          "mu_s_prime": 6.6,
+          "g": 0.87
+        },
+        "650": {
+          "mu_a": 0.018,
+          "mu_s_prime": 6.3,
+          "g": 0.87
+        },
+        "700": {
+          "mu_a": 0.015,
+          "mu_s_prime": 5.6,
+          "g": 0.88
+        },
+        "750": {
+          "mu_a": 0.014,
+          "mu_s_prime": 5.0,
+          "g": 0.88
+        },
+        "800": {
+          "mu_a": 0.013,
+          "mu_s_prime": 4.5,
+          "g": 0.89
+        },
+        "850": {
+          "mu_a": 0.015,
+          "mu_s_prime": 4.1,
+          "g": 0.89
+        },
+        "900": {
+          "mu_a": 0.02,
+          "mu_s_prime": 3.7,
+          "g": 0.9
+        },
+        "950": {
+          "mu_a": 0.03,
+          "mu_s_prime": 3.4,
+          "g": 0.9
+        },
+        "1000": {
+          "mu_a": 0.045,
+          "mu_s_prime": 3.1,
+          "g": 0.9
+        }
+      }
+    },
+    "skin_epidermis": {
+      "name": "Skin Epidermis",
+      "name_fr": "\u00c9piderme",
+      "category": "skin",
+      "water_content": 0.2,
+      "blood_volume_fraction": 0.0,
+      "description": "Outer skin layer, contains melanin, no blood vessels",
+      "scattering_params": {
+        "a": 4.5,
+        "b": 0.8,
+        "f_rayleigh": 0.3,
+        "b_mie": 0.7,
+        "source": "bashkatov_2011"
+      },
+      "refractive_index": {
+        "n": 1.45,
+        "source": "bashkatov_2011"
+      },
+      "anisotropy": {
+        "g_default": 0.8,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "melanin_content": {
+        "caucasian": 0.02,
+        "asian": 0.05,
+        "african": 0.15,
+        "note": "Volume fraction, affects mu_a significantly"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 2.5,
+          "mu_s_prime": 5.4,
+          "g": 0.78
+        },
+        "450": {
+          "mu_a": 1.2,
+          "mu_s_prime": 4.9,
+          "g": 0.79
+        },
+        "480": {
+          "mu_a": 0.8,
+          "mu_s_prime": 4.7,
+          "g": 0.79
+        },
+        "500": {
+          "mu_a": 0.5,
+          "mu_s_prime": 4.5,
+          "g": 0.8
+        },
+        "532": {
+          "mu_a": 0.35,
+          "mu_s_prime": 4.3,
+          "g": 0.8
+        },
+        "550": {
+          "mu_a": 0.3,
+          "mu_s_prime": 4.1,
+          "g": 0.8
+        },
+        "580": {
+          "mu_a": 0.25,
+          "mu_s_prime": 3.9,
+          "g": 0.81
+        },
+        "600": {
+          "mu_a": 0.2,
+          "mu_s_prime": 3.8,
+          "g": 0.81
+        },
+        "630": {
+          "mu_a": 0.15,
+          "mu_s_prime": 3.6,
+          "g": 0.81
+        },
+        "650": {
+          "mu_a": 0.12,
+          "mu_s_prime": 3.5,
+          "g": 0.82
+        },
+        "700": {
+          "mu_a": 0.08,
+          "mu_s_prime": 3.2,
+          "g": 0.82
+        },
+        "750": {
+          "mu_a": 0.05,
+          "mu_s_prime": 3.0,
+          "g": 0.83
+        },
+        "800": {
+          "mu_a": 0.04,
+          "mu_s_prime": 2.8,
+          "g": 0.83
+        },
+        "850": {
+          "mu_a": 0.04,
+          "mu_s_prime": 2.6,
+          "g": 0.84
+        },
+        "900": {
+          "mu_a": 0.05,
+          "mu_s_prime": 2.5,
+          "g": 0.84
+        },
+        "950": {
+          "mu_a": 0.08,
+          "mu_s_prime": 2.3,
+          "g": 0.85
+        },
+        "1000": {
+          "mu_a": 0.12,
+          "mu_s_prime": 2.2,
+          "g": 0.85
+        }
+      }
+    },
+    "skin_dermis": {
+      "name": "Skin Dermis",
+      "name_fr": "Derme",
+      "category": "skin",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.04,
+      "description": "Inner skin layer with blood vessels, collagen fibers",
+      "scattering_params": {
+        "a": 1.87,
+        "b": 1.1,
+        "f_rayleigh": 0.45,
+        "b_mie": 0.7,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.4,
+        "source": "bashkatov_2011"
+      },
+      "anisotropy": {
+        "g_default": 0.82,
+        "g_wavelength_dependent": false,
+        "source": "bashkatov_2011"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.52,
+          "mu_s_prime": 2.35,
+          "g": 0.8
+        },
+        "450": {
+          "mu_a": 0.3,
+          "mu_s_prime": 2.1,
+          "g": 0.8
+        },
+        "480": {
+          "mu_a": 0.22,
+          "mu_s_prime": 1.98,
+          "g": 0.81
+        },
+        "500": {
+          "mu_a": 0.15,
+          "mu_s_prime": 1.87,
+          "g": 0.81
+        },
+        "532": {
+          "mu_a": 0.12,
+          "mu_s_prime": 1.74,
+          "g": 0.82
+        },
+        "550": {
+          "mu_a": 0.14,
+          "mu_s_prime": 1.66,
+          "g": 0.82
+        },
+        "580": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.55,
+          "g": 0.82
+        },
+        "600": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.48,
+          "g": 0.83
+        },
+        "630": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.38,
+          "g": 0.83
+        },
+        "650": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.32,
+          "g": 0.83
+        },
+        "700": {
+          "mu_a": 0.03,
+          "mu_s_prime": 1.18,
+          "g": 0.84
+        },
+        "750": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.06,
+          "g": 0.84
+        },
+        "800": {
+          "mu_a": 0.022,
+          "mu_s_prime": 0.96,
+          "g": 0.85
+        },
+        "850": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.87,
+          "g": 0.85
+        },
+        "900": {
+          "mu_a": 0.035,
+          "mu_s_prime": 0.8,
+          "g": 0.86
+        },
+        "950": {
+          "mu_a": 0.055,
+          "mu_s_prime": 0.73,
+          "g": 0.86
+        },
+        "1000": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.68,
+          "g": 0.86
+        }
+      }
+    },
+    "muscle_skeletal": {
+      "name": "Skeletal Muscle",
+      "name_fr": "Muscle Squelettique",
+      "category": "muscle",
+      "water_content": 0.75,
+      "blood_volume_fraction": 0.05,
+      "description": "Striated muscle tissue, myoglobin present",
+      "scattering_params": {
+        "a": 0.74,
+        "b": 0.6,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.55,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.95,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 1.2,
+          "mu_s_prime": 0.88,
+          "g": 0.94
+        },
+        "450": {
+          "mu_a": 0.6,
+          "mu_s_prime": 0.82,
+          "g": 0.94
+        },
+        "480": {
+          "mu_a": 0.35,
+          "mu_s_prime": 0.79,
+          "g": 0.95
+        },
+        "500": {
+          "mu_a": 0.22,
+          "mu_s_prime": 0.77,
+          "g": 0.95
+        },
+        "532": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.74,
+          "g": 0.95
+        },
+        "550": {
+          "mu_a": 0.25,
+          "mu_s_prime": 0.72,
+          "g": 0.95
+        },
+        "580": {
+          "mu_a": 0.35,
+          "mu_s_prime": 0.69,
+          "g": 0.95
+        },
+        "600": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.67,
+          "g": 0.95
+        },
+        "630": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.64,
+          "g": 0.95
+        },
+        "650": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.62,
+          "g": 0.95
+        },
+        "700": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.58,
+          "g": 0.96
+        },
+        "750": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.55,
+          "g": 0.96
+        },
+        "800": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.52,
+          "g": 0.96
+        },
+        "850": {
+          "mu_a": 0.028,
+          "mu_s_prime": 0.49,
+          "g": 0.96
+        },
+        "900": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.47,
+          "g": 0.96
+        },
+        "950": {
+          "mu_a": 0.065,
+          "mu_s_prime": 0.45,
+          "g": 0.96
+        },
+        "1000": {
+          "mu_a": 0.095,
+          "mu_s_prime": 0.43,
+          "g": 0.96
+        }
+      }
+    },
+    "adipose_tissue": {
+      "name": "Adipose Tissue (Fat)",
+      "name_fr": "Tissu Adipeux (Graisse)",
+      "category": "connective",
+      "water_content": 0.1,
+      "blood_volume_fraction": 0.01,
+      "description": "Subcutaneous fat, lipid-rich cells",
+      "scattering_params": {
+        "a": 1.23,
+        "b": 0.3,
+        "f_rayleigh": 0.05,
+        "b_mie": 0.3,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.46,
+        "source": "bashkatov_2011"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.35,
+          "g": 0.88
+        },
+        "450": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.32,
+          "g": 0.89
+        },
+        "480": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.29,
+          "g": 0.89
+        },
+        "500": {
+          "mu_a": 0.03,
+          "mu_s_prime": 1.27,
+          "g": 0.9
+        },
+        "532": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.25,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.23,
+          "g": 0.9
+        },
+        "580": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.21,
+          "g": 0.9
+        },
+        "600": {
+          "mu_a": 0.02,
+          "mu_s_prime": 1.19,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.02,
+          "mu_s_prime": 1.17,
+          "g": 0.91
+        },
+        "650": {
+          "mu_a": 0.02,
+          "mu_s_prime": 1.15,
+          "g": 0.91
+        },
+        "700": {
+          "mu_a": 0.02,
+          "mu_s_prime": 1.11,
+          "g": 0.91
+        },
+        "750": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.07,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.03,
+          "mu_s_prime": 1.04,
+          "g": 0.92
+        },
+        "850": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.01,
+          "g": 0.92
+        },
+        "900": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.98,
+          "g": 0.92
+        },
+        "950": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.95,
+          "g": 0.92
+        },
+        "1000": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.93,
+          "g": 0.92
+        }
+      }
+    },
+    "blood_oxygenated": {
+      "name": "Blood (Oxygenated)",
+      "name_fr": "Sang (Oxyg\u00e9n\u00e9)",
+      "category": "fluid",
+      "water_content": 0.9,
+      "blood_volume_fraction": 1.0,
+      "description": "Arterial blood with high oxygen saturation (>95%)",
+      "scattering_params": {
+        "a": 2.2,
+        "b": 0.7,
+        "f_rayleigh": 0.0,
+        "b_mie": 0.7,
+        "source": "bosschaart_2014"
+      },
+      "refractive_index": {
+        "n": 1.36,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.99,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "oxygen_saturation": 0.98,
+      "hematocrit": 0.45,
+      "wavelength_data": {
+        "400": {
+          "mu_a": 28.0,
+          "mu_s_prime": 2.8,
+          "g": 0.99
+        },
+        "450": {
+          "mu_a": 12.0,
+          "mu_s_prime": 2.6,
+          "g": 0.99
+        },
+        "480": {
+          "mu_a": 4.5,
+          "mu_s_prime": 2.5,
+          "g": 0.99
+        },
+        "500": {
+          "mu_a": 2.2,
+          "mu_s_prime": 2.4,
+          "g": 0.99
+        },
+        "532": {
+          "mu_a": 2.8,
+          "mu_s_prime": 2.3,
+          "g": 0.99
+        },
+        "550": {
+          "mu_a": 4.5,
+          "mu_s_prime": 2.2,
+          "g": 0.99
+        },
+        "580": {
+          "mu_a": 5.2,
+          "mu_s_prime": 2.1,
+          "g": 0.99
+        },
+        "600": {
+          "mu_a": 0.45,
+          "mu_s_prime": 2.0,
+          "g": 0.99
+        },
+        "630": {
+          "mu_a": 0.15,
+          "mu_s_prime": 1.9,
+          "g": 0.99
+        },
+        "650": {
+          "mu_a": 0.1,
+          "mu_s_prime": 1.85,
+          "g": 0.99
+        },
+        "700": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.75,
+          "g": 0.99
+        },
+        "750": {
+          "mu_a": 0.12,
+          "mu_s_prime": 1.65,
+          "g": 0.99
+        },
+        "800": {
+          "mu_a": 0.2,
+          "mu_s_prime": 1.55,
+          "g": 0.99
+        },
+        "850": {
+          "mu_a": 0.25,
+          "mu_s_prime": 1.48,
+          "g": 0.99
+        },
+        "900": {
+          "mu_a": 0.35,
+          "mu_s_prime": 1.4,
+          "g": 0.99
+        },
+        "950": {
+          "mu_a": 0.6,
+          "mu_s_prime": 1.33,
+          "g": 0.99
+        },
+        "1000": {
+          "mu_a": 0.9,
+          "mu_s_prime": 1.27,
+          "g": 0.99
+        }
+      }
+    },
+    "blood_deoxygenated": {
+      "name": "Blood (Deoxygenated)",
+      "name_fr": "Sang (D\u00e9soxyg\u00e9n\u00e9)",
+      "category": "fluid",
+      "water_content": 0.9,
+      "blood_volume_fraction": 1.0,
+      "description": "Venous blood with lower oxygen saturation (~70%)",
+      "scattering_params": {
+        "a": 2.2,
+        "b": 0.7,
+        "f_rayleigh": 0.0,
+        "b_mie": 0.7,
+        "source": "bosschaart_2014"
+      },
+      "refractive_index": {
+        "n": 1.36,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.99,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "oxygen_saturation": 0.7,
+      "hematocrit": 0.45,
+      "wavelength_data": {
+        "400": {
+          "mu_a": 25.0,
+          "mu_s_prime": 2.8,
+          "g": 0.99
+        },
+        "450": {
+          "mu_a": 18.0,
+          "mu_s_prime": 2.6,
+          "g": 0.99
+        },
+        "480": {
+          "mu_a": 8.0,
+          "mu_s_prime": 2.5,
+          "g": 0.99
+        },
+        "500": {
+          "mu_a": 4.0,
+          "mu_s_prime": 2.4,
+          "g": 0.99
+        },
+        "532": {
+          "mu_a": 3.5,
+          "mu_s_prime": 2.3,
+          "g": 0.99
+        },
+        "550": {
+          "mu_a": 5.0,
+          "mu_s_prime": 2.2,
+          "g": 0.99
+        },
+        "580": {
+          "mu_a": 4.0,
+          "mu_s_prime": 2.1,
+          "g": 0.99
+        },
+        "600": {
+          "mu_a": 1.5,
+          "mu_s_prime": 2.0,
+          "g": 0.99
+        },
+        "630": {
+          "mu_a": 0.8,
+          "mu_s_prime": 1.9,
+          "g": 0.99
+        },
+        "650": {
+          "mu_a": 0.55,
+          "mu_s_prime": 1.85,
+          "g": 0.99
+        },
+        "700": {
+          "mu_a": 0.3,
+          "mu_s_prime": 1.75,
+          "g": 0.99
+        },
+        "750": {
+          "mu_a": 0.2,
+          "mu_s_prime": 1.65,
+          "g": 0.99
+        },
+        "800": {
+          "mu_a": 0.22,
+          "mu_s_prime": 1.55,
+          "g": 0.99
+        },
+        "850": {
+          "mu_a": 0.26,
+          "mu_s_prime": 1.48,
+          "g": 0.99
+        },
+        "900": {
+          "mu_a": 0.38,
+          "mu_s_prime": 1.4,
+          "g": 0.99
+        },
+        "950": {
+          "mu_a": 0.65,
+          "mu_s_prime": 1.33,
+          "g": 0.99
+        },
+        "1000": {
+          "mu_a": 0.95,
+          "mu_s_prime": 1.27,
+          "g": 0.99
+        }
+      }
+    },
+    "liver": {
+      "name": "Liver",
+      "name_fr": "Foie",
+      "category": "organ",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.3,
+      "description": "Hepatic tissue, high blood content and mitochondria",
+      "scattering_params": {
+        "a": 1.64,
+        "b": 0.6,
+        "f_rayleigh": 0.2,
+        "b_mie": 0.55,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.95,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 5.0,
+          "mu_s_prime": 1.95,
+          "g": 0.94
+        },
+        "450": {
+          "mu_a": 2.5,
+          "mu_s_prime": 1.82,
+          "g": 0.94
+        },
+        "480": {
+          "mu_a": 1.2,
+          "mu_s_prime": 1.75,
+          "g": 0.95
+        },
+        "500": {
+          "mu_a": 0.8,
+          "mu_s_prime": 1.7,
+          "g": 0.95
+        },
+        "532": {
+          "mu_a": 0.9,
+          "mu_s_prime": 1.62,
+          "g": 0.95
+        },
+        "550": {
+          "mu_a": 1.2,
+          "mu_s_prime": 1.58,
+          "g": 0.95
+        },
+        "580": {
+          "mu_a": 1.5,
+          "mu_s_prime": 1.5,
+          "g": 0.95
+        },
+        "600": {
+          "mu_a": 0.4,
+          "mu_s_prime": 1.45,
+          "g": 0.95
+        },
+        "630": {
+          "mu_a": 0.2,
+          "mu_s_prime": 1.38,
+          "g": 0.95
+        },
+        "650": {
+          "mu_a": 0.15,
+          "mu_s_prime": 1.34,
+          "g": 0.95
+        },
+        "700": {
+          "mu_a": 0.1,
+          "mu_s_prime": 1.25,
+          "g": 0.96
+        },
+        "750": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.18,
+          "g": 0.96
+        },
+        "800": {
+          "mu_a": 0.07,
+          "mu_s_prime": 1.11,
+          "g": 0.96
+        },
+        "850": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.05,
+          "g": 0.96
+        },
+        "900": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.99,
+          "g": 0.96
+        },
+        "950": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.94,
+          "g": 0.96
+        },
+        "1000": {
+          "mu_a": 0.32,
+          "mu_s_prime": 0.89,
+          "g": 0.96
+        }
+      }
+    },
+    "bone_cortical": {
+      "name": "Cortical Bone",
+      "name_fr": "Os Cortical",
+      "category": "bone",
+      "water_content": 0.12,
+      "blood_volume_fraction": 0.02,
+      "description": "Dense outer bone layer, hydroxyapatite crystals",
+      "scattering_params": {
+        "a": 2.5,
+        "b": 0.5,
+        "f_rayleigh": 0.1,
+        "b_mie": 0.45,
+        "source": "bashkatov_2011"
+      },
+      "refractive_index": {
+        "n": 1.55,
+        "source": "bashkatov_2011"
+      },
+      "anisotropy": {
+        "g_default": 0.93,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.08,
+          "mu_s_prime": 2.95,
+          "g": 0.92
+        },
+        "450": {
+          "mu_a": 0.06,
+          "mu_s_prime": 2.8,
+          "g": 0.92
+        },
+        "480": {
+          "mu_a": 0.05,
+          "mu_s_prime": 2.72,
+          "g": 0.93
+        },
+        "500": {
+          "mu_a": 0.04,
+          "mu_s_prime": 2.65,
+          "g": 0.93
+        },
+        "532": {
+          "mu_a": 0.035,
+          "mu_s_prime": 2.56,
+          "g": 0.93
+        },
+        "550": {
+          "mu_a": 0.035,
+          "mu_s_prime": 2.5,
+          "g": 0.93
+        },
+        "580": {
+          "mu_a": 0.035,
+          "mu_s_prime": 2.42,
+          "g": 0.93
+        },
+        "600": {
+          "mu_a": 0.03,
+          "mu_s_prime": 2.36,
+          "g": 0.93
+        },
+        "630": {
+          "mu_a": 0.03,
+          "mu_s_prime": 2.28,
+          "g": 0.93
+        },
+        "650": {
+          "mu_a": 0.03,
+          "mu_s_prime": 2.23,
+          "g": 0.93
+        },
+        "700": {
+          "mu_a": 0.03,
+          "mu_s_prime": 2.12,
+          "g": 0.94
+        },
+        "750": {
+          "mu_a": 0.035,
+          "mu_s_prime": 2.02,
+          "g": 0.94
+        },
+        "800": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.93,
+          "g": 0.94
+        },
+        "850": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.84,
+          "g": 0.94
+        },
+        "900": {
+          "mu_a": 0.07,
+          "mu_s_prime": 1.76,
+          "g": 0.94
+        },
+        "950": {
+          "mu_a": 0.1,
+          "mu_s_prime": 1.69,
+          "g": 0.94
+        },
+        "1000": {
+          "mu_a": 0.14,
+          "mu_s_prime": 1.62,
+          "g": 0.94
+        }
+      }
+    },
+    "lung_inflated": {
+      "name": "Lung (Inflated)",
+      "name_fr": "Poumon (Gonfl\u00e9)",
+      "category": "organ",
+      "water_content": 0.8,
+      "blood_volume_fraction": 0.1,
+      "description": "Lung tissue with air-filled alveoli",
+      "scattering_params": {
+        "a": 2.2,
+        "b": 0.5,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.45,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.94,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 4.0,
+          "mu_s_prime": 2.6,
+          "g": 0.93
+        },
+        "450": {
+          "mu_a": 2.0,
+          "mu_s_prime": 2.47,
+          "g": 0.93
+        },
+        "480": {
+          "mu_a": 1.0,
+          "mu_s_prime": 2.38,
+          "g": 0.94
+        },
+        "500": {
+          "mu_a": 0.6,
+          "mu_s_prime": 2.32,
+          "g": 0.94
+        },
+        "532": {
+          "mu_a": 0.7,
+          "mu_s_prime": 2.22,
+          "g": 0.94
+        },
+        "550": {
+          "mu_a": 0.9,
+          "mu_s_prime": 2.16,
+          "g": 0.94
+        },
+        "580": {
+          "mu_a": 1.1,
+          "mu_s_prime": 2.08,
+          "g": 0.94
+        },
+        "600": {
+          "mu_a": 0.35,
+          "mu_s_prime": 2.02,
+          "g": 0.94
+        },
+        "630": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.94,
+          "g": 0.94
+        },
+        "650": {
+          "mu_a": 0.12,
+          "mu_s_prime": 1.89,
+          "g": 0.94
+        },
+        "700": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.78,
+          "g": 0.95
+        },
+        "750": {
+          "mu_a": 0.07,
+          "mu_s_prime": 1.69,
+          "g": 0.95
+        },
+        "800": {
+          "mu_a": 0.06,
+          "mu_s_prime": 1.6,
+          "g": 0.95
+        },
+        "850": {
+          "mu_a": 0.07,
+          "mu_s_prime": 1.53,
+          "g": 0.95
+        },
+        "900": {
+          "mu_a": 0.1,
+          "mu_s_prime": 1.46,
+          "g": 0.95
+        },
+        "950": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.39,
+          "g": 0.95
+        },
+        "1000": {
+          "mu_a": 0.28,
+          "mu_s_prime": 1.33,
+          "g": 0.95
+        }
+      }
+    },
+    "kidney_cortex": {
+      "name": "Kidney Cortex",
+      "name_fr": "Cortex R\u00e9nal",
+      "category": "organ",
+      "water_content": 0.8,
+      "blood_volume_fraction": 0.25,
+      "description": "Outer kidney layer with glomeruli",
+      "scattering_params": {
+        "a": 2.5,
+        "b": 0.7,
+        "f_rayleigh": 0.2,
+        "b_mie": 0.6,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.39,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 3.5,
+          "mu_s_prime": 2.95,
+          "g": 0.89
+        },
+        "450": {
+          "mu_a": 1.8,
+          "mu_s_prime": 2.72,
+          "g": 0.89
+        },
+        "480": {
+          "mu_a": 0.9,
+          "mu_s_prime": 2.6,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.6,
+          "mu_s_prime": 2.5,
+          "g": 0.9
+        },
+        "532": {
+          "mu_a": 0.7,
+          "mu_s_prime": 2.38,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.9,
+          "mu_s_prime": 2.3,
+          "g": 0.9
+        },
+        "580": {
+          "mu_a": 1.1,
+          "mu_s_prime": 2.18,
+          "g": 0.9
+        },
+        "600": {
+          "mu_a": 0.35,
+          "mu_s_prime": 2.1,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.98,
+          "g": 0.9
+        },
+        "650": {
+          "mu_a": 0.12,
+          "mu_s_prime": 1.92,
+          "g": 0.91
+        },
+        "700": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.78,
+          "g": 0.91
+        },
+        "750": {
+          "mu_a": 0.07,
+          "mu_s_prime": 1.65,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.06,
+          "mu_s_prime": 1.55,
+          "g": 0.91
+        },
+        "850": {
+          "mu_a": 0.07,
+          "mu_s_prime": 1.45,
+          "g": 0.91
+        },
+        "900": {
+          "mu_a": 0.1,
+          "mu_s_prime": 1.36,
+          "g": 0.91
+        },
+        "950": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.28,
+          "g": 0.91
+        },
+        "1000": {
+          "mu_a": 0.28,
+          "mu_s_prime": 1.21,
+          "g": 0.91
+        }
+      }
+    },
+    "heart_myocardium": {
+      "name": "Heart Myocardium",
+      "name_fr": "Myocarde",
+      "category": "muscle",
+      "water_content": 0.78,
+      "blood_volume_fraction": 0.08,
+      "description": "Cardiac muscle tissue, high myoglobin content",
+      "scattering_params": {
+        "a": 0.82,
+        "b": 0.5,
+        "f_rayleigh": 0.1,
+        "b_mie": 0.45,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.96,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 2.0,
+          "mu_s_prime": 0.97,
+          "g": 0.95
+        },
+        "450": {
+          "mu_a": 1.0,
+          "mu_s_prime": 0.92,
+          "g": 0.95
+        },
+        "480": {
+          "mu_a": 0.5,
+          "mu_s_prime": 0.88,
+          "g": 0.96
+        },
+        "500": {
+          "mu_a": 0.35,
+          "mu_s_prime": 0.85,
+          "g": 0.96
+        },
+        "532": {
+          "mu_a": 0.4,
+          "mu_s_prime": 0.82,
+          "g": 0.96
+        },
+        "550": {
+          "mu_a": 0.5,
+          "mu_s_prime": 0.8,
+          "g": 0.96
+        },
+        "580": {
+          "mu_a": 0.6,
+          "mu_s_prime": 0.77,
+          "g": 0.96
+        },
+        "600": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.75,
+          "g": 0.96
+        },
+        "630": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.72,
+          "g": 0.96
+        },
+        "650": {
+          "mu_a": 0.09,
+          "mu_s_prime": 0.7,
+          "g": 0.96
+        },
+        "700": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.66,
+          "g": 0.96
+        },
+        "750": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.62,
+          "g": 0.96
+        },
+        "800": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.59,
+          "g": 0.97
+        },
+        "850": {
+          "mu_a": 0.045,
+          "mu_s_prime": 0.56,
+          "g": 0.97
+        },
+        "900": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.54,
+          "g": 0.97
+        },
+        "950": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.51,
+          "g": 0.97
+        },
+        "1000": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.49,
+          "g": 0.97
+        }
+      }
+    },
+    "retina": {
+      "name": "Retina",
+      "name_fr": "R\u00e9tine",
+      "category": "neural",
+      "water_content": 0.85,
+      "blood_volume_fraction": 0.03,
+      "description": "Neural tissue lining the eye, photoreceptors",
+      "scattering_params": {
+        "a": 1.0,
+        "b": 1.3,
+        "f_rayleigh": 0.35,
+        "b_mie": 0.8,
+        "source": "hammer_1995"
+      },
+      "refractive_index": {
+        "n": 1.36,
+        "source": "cheong_1990"
+      },
+      "anisotropy": {
+        "g_default": 0.97,
+        "g_wavelength_dependent": false,
+        "source": "hammer_1995"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 1.5,
+          "mu_s_prime": 1.35,
+          "g": 0.96
+        },
+        "450": {
+          "mu_a": 0.8,
+          "mu_s_prime": 1.15,
+          "g": 0.96
+        },
+        "480": {
+          "mu_a": 0.5,
+          "mu_s_prime": 1.03,
+          "g": 0.97
+        },
+        "500": {
+          "mu_a": 0.3,
+          "mu_s_prime": 0.95,
+          "g": 0.97
+        },
+        "532": {
+          "mu_a": 0.25,
+          "mu_s_prime": 0.85,
+          "g": 0.97
+        },
+        "550": {
+          "mu_a": 0.3,
+          "mu_s_prime": 0.8,
+          "g": 0.97
+        },
+        "580": {
+          "mu_a": 0.35,
+          "mu_s_prime": 0.73,
+          "g": 0.97
+        },
+        "600": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.68,
+          "g": 0.97
+        },
+        "630": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.61,
+          "g": 0.97
+        },
+        "650": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.57,
+          "g": 0.97
+        },
+        "700": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.49,
+          "g": 0.97
+        },
+        "750": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.43,
+          "g": 0.97
+        },
+        "800": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.38,
+          "g": 0.98
+        },
+        "850": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.33,
+          "g": 0.98
+        },
+        "900": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.29,
+          "g": 0.98
+        },
+        "950": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.26,
+          "g": 0.98
+        },
+        "1000": {
+          "mu_a": 0.09,
+          "mu_s_prime": 0.23,
+          "g": 0.98
+        }
+      }
+    },
+    "spinal_cord": {
+      "name": "Spinal Cord",
+      "name_fr": "Moelle \u00c9pini\u00e8re",
+      "category": "neural",
+      "water_content": 0.75,
+      "blood_volume_fraction": 0.03,
+      "description": "Central nervous system, mix of white and gray matter",
+      "scattering_params": {
+        "a": 4.5,
+        "b": 1.1,
+        "f_rayleigh": 0.3,
+        "b_mie": 0.7,
+        "source": "yaroslavsky_2002"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "yaroslavsky_2002"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "g_wavelength_dependent": false,
+        "source": "yaroslavsky_2002"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.2,
+          "mu_s_prime": 5.7,
+          "g": 0.86
+        },
+        "450": {
+          "mu_a": 0.1,
+          "mu_s_prime": 5.05,
+          "g": 0.87
+        },
+        "480": {
+          "mu_a": 0.07,
+          "mu_s_prime": 4.72,
+          "g": 0.87
+        },
+        "500": {
+          "mu_a": 0.05,
+          "mu_s_prime": 4.5,
+          "g": 0.88
+        },
+        "532": {
+          "mu_a": 0.04,
+          "mu_s_prime": 4.18,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.045,
+          "mu_s_prime": 4.0,
+          "g": 0.88
+        },
+        "580": {
+          "mu_a": 0.05,
+          "mu_s_prime": 3.73,
+          "g": 0.88
+        },
+        "600": {
+          "mu_a": 0.03,
+          "mu_s_prime": 3.55,
+          "g": 0.89
+        },
+        "630": {
+          "mu_a": 0.025,
+          "mu_s_prime": 3.3,
+          "g": 0.89
+        },
+        "650": {
+          "mu_a": 0.022,
+          "mu_s_prime": 3.15,
+          "g": 0.89
+        },
+        "700": {
+          "mu_a": 0.018,
+          "mu_s_prime": 2.82,
+          "g": 0.89
+        },
+        "750": {
+          "mu_a": 0.016,
+          "mu_s_prime": 2.54,
+          "g": 0.9
+        },
+        "800": {
+          "mu_a": 0.015,
+          "mu_s_prime": 2.3,
+          "g": 0.9
+        },
+        "850": {
+          "mu_a": 0.017,
+          "mu_s_prime": 2.08,
+          "g": 0.9
+        },
+        "900": {
+          "mu_a": 0.024,
+          "mu_s_prime": 1.9,
+          "g": 0.9
+        },
+        "950": {
+          "mu_a": 0.035,
+          "mu_s_prime": 1.73,
+          "g": 0.9
+        },
+        "1000": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.58,
+          "g": 0.9
+        }
+      }
+    },
+    "tumor_glioblastoma": {
+      "name": "Glioblastoma (Brain Tumor)",
+      "name_fr": "Glioblastome (Tumeur C\u00e9r\u00e9brale)",
+      "category": "pathological",
+      "water_content": 0.85,
+      "blood_volume_fraction": 0.08,
+      "description": "High-grade malignant brain tumor, increased scattering",
+      "scattering_params": {
+        "a": 3.5,
+        "b": 0.9,
+        "f_rayleigh": 0.25,
+        "b_mie": 0.7,
+        "source": "yaroslavsky_2002"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "yaroslavsky_2002"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "g_wavelength_dependent": false,
+        "source": "yaroslavsky_2002"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.5,
+          "mu_s_prime": 4.2,
+          "g": 0.86
+        },
+        "450": {
+          "mu_a": 0.25,
+          "mu_s_prime": 3.85,
+          "g": 0.87
+        },
+        "480": {
+          "mu_a": 0.15,
+          "mu_s_prime": 3.65,
+          "g": 0.87
+        },
+        "500": {
+          "mu_a": 0.1,
+          "mu_s_prime": 3.5,
+          "g": 0.88
+        },
+        "532": {
+          "mu_a": 0.08,
+          "mu_s_prime": 3.3,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.09,
+          "mu_s_prime": 3.18,
+          "g": 0.88
+        },
+        "580": {
+          "mu_a": 0.1,
+          "mu_s_prime": 3.0,
+          "g": 0.88
+        },
+        "600": {
+          "mu_a": 0.06,
+          "mu_s_prime": 2.88,
+          "g": 0.88
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 2.7,
+          "g": 0.89
+        },
+        "650": {
+          "mu_a": 0.035,
+          "mu_s_prime": 2.6,
+          "g": 0.89
+        },
+        "700": {
+          "mu_a": 0.03,
+          "mu_s_prime": 2.38,
+          "g": 0.89
+        },
+        "750": {
+          "mu_a": 0.028,
+          "mu_s_prime": 2.18,
+          "g": 0.89
+        },
+        "800": {
+          "mu_a": 0.025,
+          "mu_s_prime": 2.0,
+          "g": 0.9
+        },
+        "850": {
+          "mu_a": 0.028,
+          "mu_s_prime": 1.85,
+          "g": 0.9
+        },
+        "900": {
+          "mu_a": 0.038,
+          "mu_s_prime": 1.7,
+          "g": 0.9
+        },
+        "950": {
+          "mu_a": 0.055,
+          "mu_s_prime": 1.58,
+          "g": 0.9
+        },
+        "1000": {
+          "mu_a": 0.078,
+          "mu_s_prime": 1.47,
+          "g": 0.9
+        }
+      }
+    },
+    "prostate": {
+      "name": "Prostate",
+      "name_fr": "Prostate",
+      "category": "organ",
+      "water_content": 0.8,
+      "blood_volume_fraction": 0.05,
+      "description": "Glandular and stromal tissue",
+      "scattering_params": {
+        "a": 1.54,
+        "b": 0.7,
+        "f_rayleigh": 0.18,
+        "b_mie": 0.6,
+        "source": "sandell_2011"
+      },
+      "refractive_index": {
+        "n": 1.4,
+        "source": "sandell_2011"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "g_wavelength_dependent": false,
+        "source": "sandell_2011"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.9,
+          "mu_s_prime": 1.82,
+          "g": 0.88
+        },
+        "450": {
+          "mu_a": 0.45,
+          "mu_s_prime": 1.68,
+          "g": 0.89
+        },
+        "480": {
+          "mu_a": 0.28,
+          "mu_s_prime": 1.6,
+          "g": 0.89
+        },
+        "500": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.54,
+          "g": 0.9
+        },
+        "532": {
+          "mu_a": 0.15,
+          "mu_s_prime": 1.46,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.18,
+          "mu_s_prime": 1.42,
+          "g": 0.9
+        },
+        "580": {
+          "mu_a": 0.22,
+          "mu_s_prime": 1.35,
+          "g": 0.9
+        },
+        "600": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.3,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.23,
+          "g": 0.9
+        },
+        "650": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.19,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.03,
+          "mu_s_prime": 1.1,
+          "g": 0.91
+        },
+        "750": {
+          "mu_a": 0.025,
+          "mu_s_prime": 1.02,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.022,
+          "mu_s_prime": 0.95,
+          "g": 0.91
+        },
+        "850": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.89,
+          "g": 0.91
+        },
+        "900": {
+          "mu_a": 0.035,
+          "mu_s_prime": 0.84,
+          "g": 0.91
+        },
+        "950": {
+          "mu_a": 0.055,
+          "mu_s_prime": 0.79,
+          "g": 0.91
+        },
+        "1000": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.74,
+          "g": 0.91
+        }
+      }
+    },
+    "breast_fibrous": {
+      "name": "Breast Tissue (Fibrous)",
+      "name_fr": "Tissu Mammaire (Fibreux)",
+      "category": "connective",
+      "water_content": 0.3,
+      "blood_volume_fraction": 0.02,
+      "description": "Dense fibrous breast tissue",
+      "scattering_params": {
+        "a": 1.2,
+        "b": 1.0,
+        "f_rayleigh": 0.35,
+        "b_mie": 0.7,
+        "source": "jacques_2013"
+      },
+      "refractive_index": {
+        "n": 1.4,
+        "source": "jacques_2013"
+      },
+      "anisotropy": {
+        "g_default": 0.92,
+        "g_wavelength_dependent": false,
+        "source": "cheong_1990"
+      },
+      "wavelength_data": {
+        "400": {
+          "mu_a": 0.15,
+          "mu_s_prime": 1.5,
+          "g": 0.9
+        },
+        "450": {
+          "mu_a": 0.08,
+          "mu_s_prime": 1.34,
+          "g": 0.91
+        },
+        "480": {
+          "mu_a": 0.05,
+          "mu_s_prime": 1.26,
+          "g": 0.91
+        },
+        "500": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.2,
+          "g": 0.92
+        },
+        "532": {
+          "mu_a": 0.035,
+          "mu_s_prime": 1.12,
+          "g": 0.92
+        },
+        "550": {
+          "mu_a": 0.04,
+          "mu_s_prime": 1.08,
+          "g": 0.92
+        },
+        "580": {
+          "mu_a": 0.045,
+          "mu_s_prime": 1.01,
+          "g": 0.92
+        },
+        "600": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.97,
+          "g": 0.92
+        },
+        "630": {
+          "mu_a": 0.018,
+          "mu_s_prime": 0.91,
+          "g": 0.92
+        },
+        "650": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.87,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.012,
+          "mu_s_prime": 0.79,
+          "g": 0.93
+        },
+        "750": {
+          "mu_a": 0.011,
+          "mu_s_prime": 0.72,
+          "g": 0.93
+        },
+        "800": {
+          "mu_a": 0.01,
+          "mu_s_prime": 0.66,
+          "g": 0.93
+        },
+        "850": {
+          "mu_a": 0.012,
+          "mu_s_prime": 0.6,
+          "g": 0.93
+        },
+        "900": {
+          "mu_a": 0.018,
+          "mu_s_prime": 0.56,
+          "g": 0.93
+        },
+        "950": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.51,
+          "g": 0.93
+        },
+        "1000": {
+          "mu_a": 0.048,
+          "mu_s_prime": 0.47,
+          "g": 0.93
+        }
+      }
+    },
+    "tumor_melanoma": {
+      "name": "Melanoma Tumor",
+      "category": "pathological",
+      "description": "Pigmented melanoma with high melanin content",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.4,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.8,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 2.5,
+          "mu_s_prime": 1.4,
+          "g": 0.8
+        },
+        "500": {
+          "mu_a": 1.8,
+          "mu_s_prime": 1.28,
+          "g": 0.8
+        },
+        "550": {
+          "mu_a": 1.2,
+          "mu_s_prime": 1.083,
+          "g": 0.81
+        },
+        "600": {
+          "mu_a": 0.8,
+          "mu_s_prime": 0.9072,
+          "g": 0.82
+        },
+        "630": {
+          "mu_a": 0.6,
+          "mu_s_prime": 0.7514,
+          "g": 0.83
+        },
+        "650": {
+          "mu_a": 0.5,
+          "mu_s_prime": 0.64,
+          "g": 0.84
+        },
+        "700": {
+          "mu_a": 0.35,
+          "mu_s_prime": 0.5175,
+          "g": 0.85
+        },
+        "750": {
+          "mu_a": 0.25,
+          "mu_s_prime": 0.4116,
+          "g": 0.86
+        },
+        "800": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.3211,
+          "g": 0.87
+        },
+        "850": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.2448,
+          "g": 0.88
+        },
+        "900": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.1815,
+          "g": 0.89
+        }
+      }
+    },
+    "tumor_glioblastoma_grade4": {
+      "name": "Glioblastoma Grade IV",
+      "category": "pathological",
+      "description": "High-grade glioma with necrotic core",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.4032,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.36,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.2662,
+          "g": 0.89
+        },
+        "600": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.19,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.17,
+          "g": 0.9
+        },
+        "650": {
+          "mu_a": 0.035,
+          "mu_s_prime": 0.1296,
+          "g": 0.91
+        },
+        "700": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.1134,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0704,
+          "g": 0.92
+        },
+        "900": {
+          "mu_a": 0.018,
+          "mu_s_prime": 0.0576,
+          "g": 0.92
+        }
+      }
+    },
+    "tumor_breast_carcinoma": {
+      "name": "Breast Carcinoma",
+      "category": "pathological",
+      "description": "Invasive ductal carcinoma",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.4,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.22,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.2,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.1458,
+          "g": 0.91
+        },
+        "600": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.1296,
+          "g": 0.91
+        },
+        "630": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.0896,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0768,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.049,
+          "g": 0.93
+        },
+        "900": {
+          "mu_a": 0.012,
+          "mu_s_prime": 0.0392,
+          "g": 0.93
+        }
+      }
+    },
+    "tumor_colorectal": {
+      "name": "Colorectal Adenocarcinoma",
+      "category": "pathological",
+      "description": "Colon cancer tissue",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.288,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.2592,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.1936,
+          "g": 0.89
+        },
+        "600": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.14,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.12,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.081,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0512,
+          "g": 0.92
+        }
+      }
+    },
+    "tumor_prostate_adenocarcinoma": {
+      "name": "Prostate Adenocarcinoma",
+      "category": "pathological",
+      "description": "Prostate cancer tissue",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.4,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.2592,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.1936,
+          "g": 0.89
+        },
+        "550": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.14,
+          "g": 0.9
+        },
+        "600": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.0972,
+          "g": 0.91
+        },
+        "630": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.0891,
+          "g": 0.91
+        },
+        "700": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0576,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.0343,
+          "g": 0.93
+        }
+      }
+    },
+    "pancreas": {
+      "name": "Pancreas",
+      "category": "organ",
+      "description": "Healthy pancreatic tissue",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.25,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.22,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.1539,
+          "g": 0.91
+        },
+        "600": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.1296,
+          "g": 0.91
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.0896,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.0704,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0441,
+          "g": 0.93
+        }
+      }
+    },
+    "thyroid": {
+      "name": "Thyroid",
+      "category": "organ",
+      "description": "Healthy thyroid tissue",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.37,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.288,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.2592,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.1936,
+          "g": 0.89
+        },
+        "600": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.14,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.12,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.081,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0512,
+          "g": 0.92
+        }
+      }
+    },
+    "bladder_wall": {
+      "name": "Bladder Wall",
+      "category": "organ",
+      "description": "Urinary bladder tissue",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.3,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.26,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.1782,
+          "g": 0.91
+        },
+        "600": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.1152,
+          "g": 0.92
+        },
+        "630": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.1024,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.01,
+          "mu_s_prime": 0.0637,
+          "g": 0.93
+        },
+        "800": {
+          "mu_a": 0.008,
+          "mu_s_prime": 0.049,
+          "g": 0.93
+        }
+      }
+    },
+    "stomach_mucosa": {
+      "name": "Stomach Mucosa",
+      "category": "organ",
+      "description": "Gastric mucosal layer",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.25,
+          "mu_s_prime": 0.3168,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.288,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.2178,
+          "g": 0.89
+        },
+        "600": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.15,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.13,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.0891,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0576,
+          "g": 0.92
+        }
+      }
+    },
+    "colon_mucosa": {
+      "name": "Colon Mucosa",
+      "category": "organ",
+      "description": "Healthy colon mucosal layer",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.2,
+          "mu_s_prime": 0.288,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.15,
+          "mu_s_prime": 0.2592,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.1936,
+          "g": 0.89
+        },
+        "600": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.14,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.12,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.081,
+          "g": 0.91
+        },
+        "800": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0512,
+          "g": 0.92
+        }
+      }
+    },
+    "esophagus": {
+      "name": "Esophagus",
+      "category": "organ",
+      "description": "Esophageal tissue",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.88,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.18,
+          "mu_s_prime": 0.3168,
+          "g": 0.88
+        },
+        "500": {
+          "mu_a": 0.14,
+          "mu_s_prime": 0.288,
+          "g": 0.88
+        },
+        "550": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.2057,
+          "g": 0.89
+        },
+        "600": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.14,
+          "g": 0.9
+        },
+        "630": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.12,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.081,
+          "g": 0.91
+        }
+      }
+    },
+    "brain_cortex_mouse": {
+      "name": "Mouse Brain Cortex",
+      "category": "neural",
+      "description": "Mouse cortical tissue - for optogenetics",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.36,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.89,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.12,
+          "mu_s_prime": 0.2904,
+          "g": 0.89
+        },
+        "470": {
+          "mu_a": 0.1,
+          "mu_s_prime": 0.2783,
+          "g": 0.89
+        },
+        "500": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.21,
+          "g": 0.9
+        },
+        "530": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.19,
+          "g": 0.9
+        },
+        "560": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.1377,
+          "g": 0.91
+        },
+        "590": {
+          "mu_a": 0.04,
+          "mu_s_prime": 0.1215,
+          "g": 0.91
+        },
+        "630": {
+          "mu_a": 0.025,
+          "mu_s_prime": 0.0832,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0704,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.0441,
+          "g": 0.93
+        }
+      }
+    },
+    "brain_cortex_rat": {
+      "name": "Rat Brain Cortex",
+      "category": "neural",
+      "description": "Rat cortical tissue - for optogenetics",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.37,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.89,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.11,
+          "mu_s_prime": 0.3025,
+          "g": 0.89
+        },
+        "470": {
+          "mu_a": 0.095,
+          "mu_s_prime": 0.2904,
+          "g": 0.89
+        },
+        "500": {
+          "mu_a": 0.08,
+          "mu_s_prime": 0.22,
+          "g": 0.9
+        },
+        "530": {
+          "mu_a": 0.06,
+          "mu_s_prime": 0.2,
+          "g": 0.9
+        },
+        "560": {
+          "mu_a": 0.05,
+          "mu_s_prime": 0.1458,
+          "g": 0.91
+        },
+        "590": {
+          "mu_a": 0.045,
+          "mu_s_prime": 0.1296,
+          "g": 0.91
+        },
+        "630": {
+          "mu_a": 0.03,
+          "mu_s_prime": 0.0896,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.0768,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.049,
+          "g": 0.93
+        }
+      }
+    },
+    "cartilage": {
+      "name": "Cartilage",
+      "category": "connective",
+      "description": "Articular cartilage",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.38,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.95,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.045,
+          "g": 0.95
+        },
+        "500": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.04,
+          "g": 0.95
+        },
+        "550": {
+          "mu_a": 0.01,
+          "mu_s_prime": 0.0224,
+          "g": 0.96
+        },
+        "600": {
+          "mu_a": 0.008,
+          "mu_s_prime": 0.0192,
+          "g": 0.96
+        },
+        "700": {
+          "mu_a": 0.005,
+          "mu_s_prime": 0.009,
+          "g": 0.97
+        },
+        "800": {
+          "mu_a": 0.004,
+          "mu_s_prime": 0.0072,
+          "g": 0.97
+        }
+      }
+    },
+    "tendon": {
+      "name": "Tendon",
+      "category": "connective",
+      "description": "Collagen-rich tendon",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.42,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.95,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.0625,
+          "g": 0.95
+        },
+        "500": {
+          "mu_a": 0.012,
+          "mu_s_prime": 0.0352,
+          "g": 0.96
+        },
+        "550": {
+          "mu_a": 0.01,
+          "mu_s_prime": 0.0304,
+          "g": 0.96
+        },
+        "600": {
+          "mu_a": 0.008,
+          "mu_s_prime": 0.0144,
+          "g": 0.97
+        },
+        "700": {
+          "mu_a": 0.005,
+          "mu_s_prime": 0.0117,
+          "g": 0.97
+        },
+        "800": {
+          "mu_a": 0.004,
+          "mu_s_prime": 0.009,
+          "g": 0.97
+        }
+      }
+    },
+    "cornea": {
+      "name": "Cornea",
+      "category": "connective",
+      "description": "Eye cornea - highly transparent",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.376,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.005,
+          "mu_s_prime": 0.02,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.003,
+          "mu_s_prime": 0.015,
+          "g": 0.9
+        },
+        "550": {
+          "mu_a": 0.002,
+          "mu_s_prime": 0.012,
+          "g": 0.9
+        },
+        "600": {
+          "mu_a": 0.0015,
+          "mu_s_prime": 0.01,
+          "g": 0.9
+        },
+        "700": {
+          "mu_a": 0.001,
+          "mu_s_prime": 0.008,
+          "g": 0.9
+        },
+        "800": {
+          "mu_a": 0.0008,
+          "mu_s_prime": 0.006,
+          "g": 0.9
+        }
+      }
+    },
+    "sclera": {
+      "name": "Sclera",
+      "category": "connective",
+      "description": "Eye sclera (white of eye)",
+      "water_content": 0.7,
+      "blood_volume_fraction": 0.03,
+      "scattering_params": {
+        "a": 2.0,
+        "b": 1.0,
+        "f_rayleigh": 0.15,
+        "b_mie": 0.85,
+        "source": "compiled_literature"
+      },
+      "refractive_index": {
+        "n": 1.39,
+        "source": "compiled_literature"
+      },
+      "anisotropy": {
+        "g_default": 0.9,
+        "wavelength_dependence": "moderate"
+      },
+      "wavelength_data": {
+        "450": {
+          "mu_a": 0.02,
+          "mu_s_prime": 0.8,
+          "g": 0.9
+        },
+        "500": {
+          "mu_a": 0.015,
+          "mu_s_prime": 0.567,
+          "g": 0.91
+        },
+        "550": {
+          "mu_a": 0.01,
+          "mu_s_prime": 0.486,
+          "g": 0.91
+        },
+        "600": {
+          "mu_a": 0.008,
+          "mu_s_prime": 0.32,
+          "g": 0.92
+        },
+        "700": {
+          "mu_a": 0.005,
+          "mu_s_prime": 0.256,
+          "g": 0.92
+        },
+        "800": {
+          "mu_a": 0.004,
+          "mu_s_prime": 0.147,
+          "g": 0.93
+        }
+      }
+    }
+  },
+  "chromophores": {
+    "hemoglobin_oxy": {
+      "name": "Oxyhemoglobin (HbO2)",
+      "extinction_coefficient_source": "prahl_1999",
+      "note": "Extinction coefficient in cm^-1/(mol/L), multiply by concentration"
+    },
+    "hemoglobin_deoxy": {
+      "name": "Deoxyhemoglobin (Hb)",
+      "extinction_coefficient_source": "prahl_1999"
+    },
+    "water": {
+      "name": "Water (H2O)",
+      "absorption_coefficient_source": "hale_querry_1973"
+    },
+    "melanin": {
+      "name": "Melanin",
+      "absorption_formula": "mu_a = 519 * (wavelength/500)^(-3.0) cm^-1 for pure melanin"
+    },
+    "fat": {
+      "name": "Lipid/Fat",
+      "absorption_peaks": [
+        930,
+        1040,
+        1200,
+        1400
+      ],
+      "note": "Peaks in nm, significant absorption in NIR"
+    }
+  },
+  "common_wavelengths": {
+    "optogenetics": {
+      "ChR2_activation": 470,
+      "GCaMP_excitation": 488,
+      "jRGECO_excitation": 561,
+      "ReaChR_activation": 590,
+      "Chrimson_activation": 630,
+      "NIRFP_excitation": 700
+    },
+    "imaging": {
+      "confocal_405": 405,
+      "confocal_488": 488,
+      "confocal_561": 561,
+      "confocal_640": 640,
+      "two_photon": 920
+    },
+    "therapy": {
+      "PDT_visible": 630,
+      "PDT_NIR": 730,
+      "thermal_ablation": 980
+    }
+  }
+}

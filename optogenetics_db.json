@@ -1,0 +1,415 @@
+{
+  "_metadata": {
+    "name": "PhotonPath Optogenetics & Fluorophores Database",
+    "version": "1.0.0",
+    "description": "Database of opsins, calcium indicators, and fluorescent proteins for optogenetics planning"
+  },
+
+  "opsins": {
+    "ChR2": {
+      "name": "Channelrhodopsin-2",
+      "type": "excitatory",
+      "action": "cation_channel",
+      "peak_wavelength": 470,
+      "spectrum_range": [400, 550],
+      "activation_threshold_mW_mm2": 1.0,
+      "saturation_mW_mm2": 10.0,
+      "tau_on_ms": 2.0,
+      "tau_off_ms": 10.0,
+      "expression_systems": ["AAV", "transgenic"],
+      "notes": "Most widely used optogenetic actuator"
+    },
+    "ChR2_H134R": {
+      "name": "ChR2(H134R)",
+      "type": "excitatory",
+      "action": "cation_channel",
+      "peak_wavelength": 470,
+      "spectrum_range": [400, 550],
+      "activation_threshold_mW_mm2": 0.5,
+      "saturation_mW_mm2": 8.0,
+      "tau_on_ms": 2.5,
+      "tau_off_ms": 18.0,
+      "expression_systems": ["AAV", "transgenic"],
+      "notes": "Higher photocurrent than wild-type ChR2"
+    },
+    "ChRmine": {
+      "name": "ChRmine",
+      "type": "excitatory",
+      "action": "cation_channel",
+      "peak_wavelength": 520,
+      "spectrum_range": [450, 600],
+      "activation_threshold_mW_mm2": 0.1,
+      "saturation_mW_mm2": 2.0,
+      "tau_on_ms": 5.0,
+      "tau_off_ms": 25.0,
+      "expression_systems": ["AAV"],
+      "notes": "Very high light sensitivity, good for deep brain"
+    },
+    "ReaChR": {
+      "name": "ReaChR",
+      "type": "excitatory",
+      "action": "cation_channel",
+      "peak_wavelength": 590,
+      "spectrum_range": [500, 650],
+      "activation_threshold_mW_mm2": 0.5,
+      "saturation_mW_mm2": 5.0,
+      "tau_on_ms": 15.0,
+      "tau_off_ms": 50.0,
+      "expression_systems": ["AAV"],
+      "notes": "Red-shifted, better tissue penetration"
+    },
+    "Chrimson": {
+      "name": "Chrimson",
+      "type": "excitatory",
+      "action": "cation_channel",
+      "peak_wavelength": 590,
+      "spectrum_range": [500, 660],
+      "activation_threshold_mW_mm2": 0.3,
+      "saturation_mW_mm2": 3.0,
+      "tau_on_ms": 8.0,
+      "tau_off_ms": 20.0,
+      "expression_systems": ["AAV"],
+      "notes": "Red-shifted, fast kinetics"
+    },
+    "ChRonos": {
+      "name": "ChRonos",
+      "type": "excitatory",
+      "action": "cation_channel",
+      "peak_wavelength": 500,
+      "spectrum_range": [420, 560],
+      "activation_threshold_mW_mm2": 0.8,
+      "saturation_mW_mm2": 6.0,
+      "tau_on_ms": 0.5,
+      "tau_off_ms": 3.0,
+      "expression_systems": ["AAV"],
+      "notes": "Ultra-fast kinetics, good for high-frequency stimulation"
+    },
+    "NpHR": {
+      "name": "Halorhodopsin (NpHR3.0)",
+      "type": "inhibitory",
+      "action": "chloride_pump",
+      "peak_wavelength": 590,
+      "spectrum_range": [500, 650],
+      "activation_threshold_mW_mm2": 2.0,
+      "saturation_mW_mm2": 15.0,
+      "tau_on_ms": 5.0,
+      "tau_off_ms": 30.0,
+      "expression_systems": ["AAV", "transgenic"],
+      "notes": "Inhibitory opsin, silences neurons"
+    },
+    "ArchT": {
+      "name": "Archaerhodopsin-T",
+      "type": "inhibitory",
+      "action": "proton_pump",
+      "peak_wavelength": 560,
+      "spectrum_range": [480, 620],
+      "activation_threshold_mW_mm2": 1.0,
+      "saturation_mW_mm2": 10.0,
+      "tau_on_ms": 8.0,
+      "tau_off_ms": 15.0,
+      "expression_systems": ["AAV"],
+      "notes": "Strong inhibition, fast recovery"
+    },
+    "GtACR2": {
+      "name": "GtACR2",
+      "type": "inhibitory",
+      "action": "anion_channel",
+      "peak_wavelength": 470,
+      "spectrum_range": [400, 540],
+      "activation_threshold_mW_mm2": 0.05,
+      "saturation_mW_mm2": 0.5,
+      "tau_on_ms": 3.0,
+      "tau_off_ms": 10.0,
+      "expression_systems": ["AAV"],
+      "notes": "Extremely light-sensitive inhibitory opsin"
+    },
+    "stGtACR2": {
+      "name": "soma-targeted GtACR2",
+      "type": "inhibitory",
+      "action": "anion_channel",
+      "peak_wavelength": 470,
+      "spectrum_range": [400, 540],
+      "activation_threshold_mW_mm2": 0.05,
+      "saturation_mW_mm2": 0.5,
+      "tau_on_ms": 3.0,
+      "tau_off_ms": 10.0,
+      "expression_systems": ["AAV"],
+      "notes": "Soma-restricted for reduced axonal activation"
+    }
+  },
+
+  "calcium_indicators": {
+    "GCaMP6s": {
+      "name": "GCaMP6s",
+      "type": "calcium_indicator",
+      "excitation_peak": 488,
+      "emission_peak": 512,
+      "excitation_range": [450, 510],
+      "emission_range": [500, 560],
+      "Kd_nM": 144,
+      "delta_F_F0": 25.0,
+      "tau_rise_ms": 180,
+      "tau_decay_ms": 550,
+      "brightness": 1.0,
+      "notes": "Slow but very sensitive, good for sparse activity"
+    },
+    "GCaMP6f": {
+      "name": "GCaMP6f",
+      "type": "calcium_indicator",
+      "excitation_peak": 488,
+      "emission_peak": 512,
+      "excitation_range": [450, 510],
+      "emission_range": [500, 560],
+      "Kd_nM": 375,
+      "delta_F_F0": 15.0,
+      "tau_rise_ms": 45,
+      "tau_decay_ms": 140,
+      "brightness": 0.8,
+      "notes": "Fast kinetics, good for high-frequency activity"
+    },
+    "GCaMP7f": {
+      "name": "GCaMP7f",
+      "type": "calcium_indicator",
+      "excitation_peak": 488,
+      "emission_peak": 512,
+      "excitation_range": [450, 510],
+      "emission_range": [500, 560],
+      "Kd_nM": 274,
+      "delta_F_F0": 30.0,
+      "tau_rise_ms": 27,
+      "tau_decay_ms": 265,
+      "brightness": 1.2,
+      "notes": "Improved sensitivity and speed over GCaMP6f"
+    },
+    "GCaMP8f": {
+      "name": "GCaMP8f",
+      "type": "calcium_indicator",
+      "excitation_peak": 488,
+      "emission_peak": 512,
+      "excitation_range": [450, 510],
+      "emission_range": [500, 560],
+      "Kd_nM": 334,
+      "delta_F_F0": 20.0,
+      "tau_rise_ms": 10,
+      "tau_decay_ms": 70,
+      "brightness": 1.0,
+      "notes": "Ultra-fast, can resolve single action potentials"
+    },
+    "GCaMP8s": {
+      "name": "GCaMP8s",
+      "type": "calcium_indicator",
+      "excitation_peak": 488,
+      "emission_peak": 512,
+      "excitation_range": [450, 510],
+      "emission_range": [500, 560],
+      "Kd_nM": 46,
+      "delta_F_F0": 35.0,
+      "tau_rise_ms": 65,
+      "tau_decay_ms": 320,
+      "brightness": 1.1,
+      "notes": "Most sensitive GCaMP8 variant"
+    },
+    "jGCaMP8f": {
+      "name": "jGCaMP8f",
+      "type": "calcium_indicator",
+      "excitation_peak": 488,
+      "emission_peak": 512,
+      "excitation_range": [450, 510],
+      "emission_range": [500, 560],
+      "Kd_nM": 334,
+      "delta_F_F0": 18.0,
+      "tau_rise_ms": 8,
+      "tau_decay_ms": 60,
+      "brightness": 1.0,
+      "notes": "Janelia version, optimized for in vivo"
+    },
+    "RCaMP2": {
+      "name": "RCaMP2",
+      "type": "calcium_indicator",
+      "excitation_peak": 561,
+      "emission_peak": 589,
+      "excitation_range": [530, 590],
+      "emission_range": [570, 650],
+      "Kd_nM": 200,
+      "delta_F_F0": 8.0,
+      "tau_rise_ms": 50,
+      "tau_decay_ms": 200,
+      "brightness": 0.6,
+      "notes": "Red calcium indicator, good for dual-color imaging"
+    },
+    "jRGECO1a": {
+      "name": "jRGECO1a",
+      "type": "calcium_indicator",
+      "excitation_peak": 561,
+      "emission_peak": 589,
+      "excitation_range": [530, 590],
+      "emission_range": [570, 650],
+      "Kd_nM": 148,
+      "delta_F_F0": 12.0,
+      "tau_rise_ms": 30,
+      "tau_decay_ms": 350,
+      "brightness": 0.8,
+      "notes": "Best red calcium indicator for most applications"
+    },
+    "XCaMP-R": {
+      "name": "XCaMP-R",
+      "type": "calcium_indicator",
+      "excitation_peak": 580,
+      "emission_peak": 610,
+      "excitation_range": [550, 610],
+      "emission_range": [590, 670],
+      "Kd_nM": 97,
+      "delta_F_F0": 10.0,
+      "tau_rise_ms": 25,
+      "tau_decay_ms": 150,
+      "brightness": 0.7,
+      "notes": "Far-red shifted for deep imaging"
+    }
+  },
+
+  "fluorescent_proteins": {
+    "EGFP": {
+      "name": "Enhanced GFP",
+      "excitation_peak": 488,
+      "emission_peak": 507,
+      "extinction_coefficient": 55000,
+      "quantum_yield": 0.60,
+      "brightness": 33.0,
+      "photostability": "high"
+    },
+    "mCherry": {
+      "name": "mCherry",
+      "excitation_peak": 587,
+      "emission_peak": 610,
+      "extinction_coefficient": 72000,
+      "quantum_yield": 0.22,
+      "brightness": 15.8,
+      "photostability": "high"
+    },
+    "tdTomato": {
+      "name": "tdTomato",
+      "excitation_peak": 554,
+      "emission_peak": 581,
+      "extinction_coefficient": 138000,
+      "quantum_yield": 0.69,
+      "brightness": 95.2,
+      "photostability": "medium"
+    },
+    "mNeonGreen": {
+      "name": "mNeonGreen",
+      "excitation_peak": 506,
+      "emission_peak": 517,
+      "extinction_coefficient": 116000,
+      "quantum_yield": 0.80,
+      "brightness": 92.8,
+      "photostability": "high"
+    },
+    "mScarlet": {
+      "name": "mScarlet",
+      "excitation_peak": 569,
+      "emission_peak": 594,
+      "extinction_coefficient": 100000,
+      "quantum_yield": 0.70,
+      "brightness": 70.0,
+      "photostability": "high"
+    }
+  },
+
+  "light_sources": {
+    "LED_470": {
+      "name": "470nm Blue LED",
+      "center_wavelength": 470,
+      "bandwidth_fwhm": 25,
+      "typical_power_mW": 50,
+      "coupling": "fiber_200um"
+    },
+    "LED_530": {
+      "name": "530nm Green LED",
+      "center_wavelength": 530,
+      "bandwidth_fwhm": 30,
+      "typical_power_mW": 30,
+      "coupling": "fiber_200um"
+    },
+    "LED_590": {
+      "name": "590nm Amber LED",
+      "center_wavelength": 590,
+      "bandwidth_fwhm": 20,
+      "typical_power_mW": 20,
+      "coupling": "fiber_200um"
+    },
+    "LED_630": {
+      "name": "630nm Red LED",
+      "center_wavelength": 630,
+      "bandwidth_fwhm": 20,
+      "typical_power_mW": 40,
+      "coupling": "fiber_200um"
+    },
+    "LASER_473": {
+      "name": "473nm DPSS Laser",
+      "center_wavelength": 473,
+      "bandwidth_fwhm": 1,
+      "typical_power_mW": 100,
+      "coupling": "fiber_200um"
+    },
+    "LASER_532": {
+      "name": "532nm DPSS Laser",
+      "center_wavelength": 532,
+      "bandwidth_fwhm": 1,
+      "typical_power_mW": 200,
+      "coupling": "fiber_200um"
+    },
+    "LASER_589": {
+      "name": "589nm DPSS Laser",
+      "center_wavelength": 589,
+      "bandwidth_fwhm": 1,
+      "typical_power_mW": 50,
+      "coupling": "fiber_200um"
+    },
+    "LASER_635": {
+      "name": "635nm Diode Laser",
+      "center_wavelength": 635,
+      "bandwidth_fwhm": 2,
+      "typical_power_mW": 500,
+      "coupling": "fiber_400um"
+    }
+  },
+
+  "photosensitizers_pdt": {
+    "Photofrin": {
+      "name": "Porfimer sodium (Photofrin)",
+      "activation_wavelength": 630,
+      "absorption_peak": 630,
+      "therapeutic_dose_J_cm2": 150,
+      "drug_dose_mg_kg": 2.0,
+      "drug_light_interval_h": 48,
+      "applications": ["esophageal_cancer", "lung_cancer"]
+    },
+    "ALA": {
+      "name": "5-Aminolevulinic acid",
+      "activation_wavelength": 635,
+      "absorption_peak": 410,
+      "therapeutic_dose_J_cm2": 100,
+      "drug_dose_mg_kg": 20.0,
+      "drug_light_interval_h": 4,
+      "applications": ["skin_cancer", "brain_tumor_fluorescence"]
+    },
+    "Verteporfin": {
+      "name": "Verteporfin (Visudyne)",
+      "activation_wavelength": 689,
+      "absorption_peak": 689,
+      "therapeutic_dose_J_cm2": 50,
+      "drug_dose_mg_kg": 0.3,
+      "drug_light_interval_h": 0.25,
+      "applications": ["macular_degeneration", "choroidal_neovascularization"]
+    },
+    "Ce6": {
+      "name": "Chlorin e6",
+      "activation_wavelength": 660,
+      "absorption_peak": 660,
+      "therapeutic_dose_J_cm2": 100,
+      "drug_dose_mg_kg": 2.5,
+      "drug_light_interval_h": 3,
+      "applications": ["various_tumors"]
+    }
+  }
+}
