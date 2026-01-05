@@ -184,14 +184,14 @@ class TissueDB:
         return TissueInfo(
             id=tissue_id,
             name=t['name'],
-            name_fr=t['name_fr'],
+            name_fr=t.get('name_fr', t['name']),  # Fallback to name if no French name
             category=t['category'],
-            water_content=t['water_content'],
-            blood_volume_fraction=t['blood_volume_fraction'],
-            description=t['description'],
-            n=t['refractive_index']['n'],
-            g_default=t['anisotropy']['g_default'],
-            scattering_params=t['scattering_params'],
+            water_content=t.get('water_content', 0.7),
+            blood_volume_fraction=t.get('blood_volume_fraction', 0.03),
+            description=t.get('description', ''),
+            n=t.get('refractive_index', {}).get('n', 1.4),
+            g_default=t.get('anisotropy', {}).get('g_default', 0.9),
+            scattering_params=t.get('scattering_params', {}),
             available_wavelengths=wavelengths
         )
     
