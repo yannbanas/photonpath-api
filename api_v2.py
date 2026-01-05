@@ -16,6 +16,16 @@ from enum import Enum
 import numpy as np
 import json
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+from billing_endpoints import (
+    billing_router, 
+    usage_router, 
+    init_billing_system,
+    rate_limit_check
+)
 
 # Load databases
 from photonpath import TissueDB
@@ -200,6 +210,18 @@ API_KEYS = {
     "pro_key_abcdef": {"user": "pro", "plan": "pro", "limit": 50000, "used": 0}
 }
 
+app.include_router(billing_router)
+app.include_router(usage_router)
+
+# === AJOUTER UN EVENT STARTUP ===
+@app.on_event("startup")
+async def startup():
+    init_billing_system(
+        redis_url=os.getenv("REDIS_URL"),
+        stripe_secret_key=os.getenv("STRIPE_SECRET_KEY"),
+        stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET")
+    )
+    
 async def check_api_key(x_api_key: str = Header(None)):
     if x_api_key is None:
         return {"user": "anonymous", "plan": "demo", "limit": 50}

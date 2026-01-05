@@ -1,0 +1,13 @@
+# PhotonPath Stripe Price IDs
+# Copie ces valeurs dans stripe_billing.py
+
+photon_monthly=price_1SmFNz5CECz2lWrqJYr2RNAu
+photon_yearly=price_1SmFNz5CECz2lWrqH6YMpEx7
+beam_monthly=price_1SmFO05CECz2lWrqpO2pZyXk
+beam_yearly=price_1SmFO15CECz2lWrqaeDlnUIx
+laser_monthly=price_1SmFO25CECz2lWrq7vzm9hrl
+laser_yearly=price_1SmFO25CECz2lWrqIfTLw2eF
+fusion_monthly=price_1SmFO35CECz2lWrqxjjH9w3W
+fusion_yearly=price_1SmFO35CECz2lWrqGYuLnCtV
+
+test_customer_id=cus_Tjip9RpGqqJJOx
