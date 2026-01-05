@@ -50,3 +50,7 @@ config.local.py
 .pytest_cache/
 .coverage
 htmlcov/
+
+test_billing.py
+test_email.py
+test_full_billing.py
