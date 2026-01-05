@@ -322,6 +322,28 @@ async def health_check_full():
     
     return status
 
+@app.get("/test/email", tags=["System"])
+async def test_email(email: str):
+    """Test email sending."""
+    try:
+        from email_service import get_email_service
+        service = get_email_service()
+        
+        if not service.enabled:
+            return {"success": False, "error": "SMTP not configured"}
+        
+        result = service.send_welcome_email(email, "pk_test_123456789_demo")
+        
+        return {
+            "success": result,
+            "email": email,
+            "smtp_host": service.config.host,
+            "smtp_port": service.config.port
+        }
+    except Exception as e:
+        import traceback
+        return {"success": False, "error": str(e), "traceback": traceback.format_exc()}
+    
 # ============================================================================
 # TISSUE ENDPOINTS
 # ============================================================================
