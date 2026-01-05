@@ -221,7 +221,7 @@ async def startup():
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY"),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET")
     )
-    
+
 async def check_api_key(x_api_key: str = Header(None)):
     if x_api_key is None:
         return {"user": "anonymous", "plan": "demo", "limit": 50}
@@ -270,6 +270,57 @@ async def health():
             "calcium_indicators": len(CALCIUM_INDICATORS)
         }
     }
+
+# ============================================================================
+# DIAGNOSTIC ENDPOINT
+# ============================================================================
+
+@app.get("/health/full", tags=["System"])
+async def health_check_full():
+    """Full health check with all services status."""
+    status = {
+        "api": "healthy",
+        "services": {}
+    }
+    
+    # Check Redis
+    try:
+        from rate_limiter import get_rate_limiter
+        limiter = get_rate_limiter()
+        if limiter.redis_client:
+            limiter.redis_client.ping()
+            status["services"]["redis"] = {"status": "connected"}
+        else:
+            status["services"]["redis"] = {"status": "memory_fallback"}
+    except Exception as e:
+        status["services"]["redis"] = {"status": "error", "error": str(e)}
+    
+    # Check SMTP
+    try:
+        from email_service import get_smtp_config
+        config = get_smtp_config()
+        if config:
+            status["services"]["smtp"] = {
+                "status": "configured",
+                "host": config.host,
+                "port": config.port
+            }
+        else:
+            status["services"]["smtp"] = {"status": "not_configured"}
+    except Exception as e:
+        status["services"]["smtp"] = {"status": "error", "error": str(e)}
+    
+    # Check Stripe
+    try:
+        from stripe_billing import get_billing
+        billing = get_billing()
+        status["services"]["stripe"] = {
+            "status": "enabled" if billing._enabled else "disabled"
+        }
+    except Exception as e:
+        status["services"]["stripe"] = {"status": "error", "error": str(e)}
+    
+    return status
 
 # ============================================================================
 # TISSUE ENDPOINTS
