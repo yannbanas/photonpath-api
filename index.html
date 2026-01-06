@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotonPath - API Biophotonique pour la Recherche</title>
+    <meta name="description" content="API de calculs biophotoniques pour l'optogénétique, la dosimétrie PDT et l'imagerie calcique. 35 tissus, 10 opsines, simulations Monte Carlo.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           CSS VARIABLES
+           ============================================ */
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --border: rgba(0, 255, 200, 0.15);
+            --border-hover: rgba(0, 255, 200, 0.3);
+            
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            
+            --accent-cyan: #00ffc8;
+            --accent-violet: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-amber: #f59e0b;
+            --accent-emerald: #10b981;
+            --accent-blue: #3b82f6;
+            
+            --cursor-primary: #00ffc8;
+            --cursor-secondary: rgba(139, 92, 246, 0.5);
+            --cursor-hover: #ec4899;
+            
+            --glow-cyan: 0 0 20px rgba(0, 255, 200, 0.3);
+            --glow-violet: 0 0 20px rgba(139, 92, 246, 0.3);
+            --glow-pink: 0 0 20px rgba(236, 72, 153, 0.3);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Force cursor none on all interactive elements */
+        a, button, input, textarea, select, label,
+        .feature-card, .pricing-card, .endpoint-item,
+        .modal-overlay, .modal-content, .flash-message {
+            cursor: none !important;
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-pink);
+            text-shadow: var(--glow-pink);
+        }
+
+        /* ============================================
+           CUSTOM SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, 
+                var(--accent-cyan) 0%, 
+                var(--accent-violet) 25%, 
+                var(--accent-pink) 50%, 
+                var(--accent-amber) 75%, 
+                var(--accent-emerald) 100%
+            );
+            border-radius: 10px;
+            box-shadow: 
+                0 0 10px var(--accent-cyan),
+                0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            box-shadow: 
+                0 0 15px var(--accent-violet),
+                0 0 30px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-cyan) var(--bg-secondary);
+        }
+
+        /* ============================================
+           CURSOR SYSTEM
+           ============================================ */
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--cursor-primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, background 0.3s ease;
+            box-shadow: 0 0 15px var(--cursor-primary);
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--cursor-secondary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99998;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease-out;
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, 
+                rgba(0, 255, 200, 0.08) 0%, 
+                rgba(139, 92, 246, 0.04) 40%, 
+                transparent 70%
+            );
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99997;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease-out;
+        }
+
+        body:hover .cursor-dot,
+        body:hover .cursor-ring,
+        body:hover .cursor-glow {
+            opacity: 1;
+        }
+
+        /* ============================================
+           PARTICLES BACKGROUND
+           ============================================ */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float-particle linear infinite;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================
+           NAVBAR
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.75rem 2rem;
+            background: rgba(10, 10, 15, 0.95);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: width 0.3s ease;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-cyan), var(--glow-violet);
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: none;
+            padding: 0.5rem;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.05) 0%, transparent 60%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 200, 0.1);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 200, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 200, 0.5); }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, 
+                var(--text-primary) 0%, 
+                var(--accent-cyan) 50%, 
+                var(--accent-violet) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-shadow: var(--glow-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 255, 200, 0.3);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--border-hover);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 255, 200, 0.1);
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           CODE PREVIEW
+           ============================================ */
+        .code-preview {
+            max-width: 800px;
+            margin: 4rem auto 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dot.red { background: #ff5f57; }
+        .code-dot.yellow { background: #febc2e; }
+        .code-dot.green { background: #28c840; }
+
+        .code-title {
+            margin-left: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .code-body {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .code-body .comment { color: #6b7280; }
+        .code-body .keyword { color: var(--accent-pink); }
+        .code-body .string { color: var(--accent-emerald); }
+        .code-body .function { color: var(--accent-cyan); }
+        .code-body .number { color: var(--accent-amber); }
+        .code-body .variable { color: var(--accent-violet); }
+
+        /* ============================================
+           FEATURES SECTION
+           ============================================ */
+        .features {
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(0, 255, 200, 0.2), rgba(139, 92, 246, 0.2));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-tag {
+            padding: 0.3rem 0.75rem;
+            background: rgba(0, 255, 200, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+        }
+
+        /* ============================================
+           PRICING SECTION
+           ============================================ */
+        .pricing {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+            position: relative;
+            z-index: 10;
+        }
+
+        .pricing-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .pricing-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 40px rgba(0, 255, 200, 0.2);
+        }
+
+        .pricing-card.featured::before {
+            content: 'POPULAIRE';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.3rem 1rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--bg-primary);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-tagline {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .pricing-price {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+        }
+
+        .price-currency {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .price-period {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .price-free {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-emerald);
+        }
+
+        .price-custom {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-amber);
+        }
+
+        .pricing-features {
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-feature::before {
+            content: '✓';
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+            color: var(--bg-primary);
+        }
+
+        .pricing-btn.secondary {
+            background: transparent;
+            border: 2px solid var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .pricing-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .pricing-btn.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .coming-soon-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, var(--accent-amber), var(--accent-pink));
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--bg-primary);
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        /* Désactiver le badge POPULAIRE quand Bientôt est présent */
+        .pricing-card.featured .coming-soon-badge ~ .pricing-header::before,
+        .pricing-card.featured:has(.coming-soon-badge)::before {
+            display: none;
+        }
+
+        /* ============================================
+           MODALS
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            padding: 2rem;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 700px;
+            width: 100%;
+            margin: auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-pink);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .modal-section {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .modal-section strong {
+            color: var(--accent-cyan);
+        }
+
+        /* ============================================
+           API DEMO SECTION
+           ============================================ */
+        .api-demo {
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .demo-endpoints {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+
+        .endpoint-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .endpoint-item:hover {
+            background: rgba(0, 255, 200, 0.05);
+        }
+
+        .endpoint-item.active {
+            background: rgba(0, 255, 200, 0.1);
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .method {
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .method.get { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); }
+        .method.post { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+
+        .endpoint-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-response {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .response-header {
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.75rem;
+            background: rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-emerald);
+        }
+
+        .response-body {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* ============================================
+           CTA SECTION
+           ============================================ */
+        .cta {
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 3rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        .footer-copyright {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cursor-dot,
+            .cursor-ring,
+            .cursor-glow {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* ============================================
+           FLASH MESSAGE
+           ============================================ */
+        .flash-message {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(6, 182, 212, 0.95));
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            z-index: 50000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+        }
+
+        .flash-message.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .flash-message.hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        .flash-message .flash-icon {
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .flash-message .flash-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flash-message .flash-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .flash-message .flash-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .flash-message .flash-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #ffffff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-left: 10px;
+        }
+
+        .flash-message .flash-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .flash-message .flash-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 0 0 12px 12px;
+            animation: progress 10s linear forwards;
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Message -->
+    <div class="flash-message" id="flash-message">
+        <span class="flash-icon">📧</span>
+        <div class="flash-text">
+            <span class="flash-title">Email envoyé avec succès !</span>
+            <span class="flash-subtitle">Vérifiez votre boîte de réception pour votre clé API</span>
+        </div>
+        <button class="flash-close" onclick="hideFlash()">✕</button>
+        <div class="flash-progress"></div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <div class="cursor-glow"></div>
+
+    <!-- Particles Background -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>PhotonPath</span>
+            </a>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#api" class="nav-link">API</a>
+                <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank" class="nav-link">Documentation</a>
+                <a href="#pricing" class="nav-btn">Commencer</a>
+            </div>
+
+            <button class="mobile-menu-btn" id="menuBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🔬</span>
+                <span>API Biophotonique v2.0</span>
+            </div>
+            
+            <h1 class="hero-title">Calculs Biophotoniques<br>pour la Recherche</h1>
+            
+            <p class="hero-subtitle">
+                API REST pour l'optogénétique, la dosimétrie PDT, l'imagerie calcique et les simulations Monte Carlo. 
+                Intégrez des calculs de propagation lumineuse dans vos applications en quelques lignes de code.
+            </p>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">35</div>
+                    <div class="stat-label">Tissus biologiques</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Opsines</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Photosensibilisants</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">43</div>
+                    <div class="stat-label">Endpoints</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn-primary">
+                    <span>🚀</span>
+                    <span>Essai Gratuit</span>
+                </a>
+                <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank" class="btn-secondary">
+                    <span>📖</span>
+                    <span>Documentation</span>
+                </a>
+            </div>
+
+            <!-- Code Preview -->
+            <div class="code-preview">
+                <div class="code-header">
+                    <div class="code-dot red"></div>
+                    <div class="code-dot yellow"></div>
+                    <div class="code-dot green"></div>
+                    <span class="code-title">quick_start.py</span>
+                </div>
+                <div class="code-body">
+                    <span class="keyword">import</span> requests<br><br>
+                    <span class="comment"># Calcul de pénétration lumineuse</span><br>
+                    <span class="variable">response</span> = requests.<span class="function">get</span>(<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"https://photonpath-api.up.railway.app/v2/tissues/brain_gray_matter"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;params={<span class="string">"wavelength"</span>: <span class="number">630</span>}<br>
+                    )<br><br>
+                    <span class="variable">data</span> = response.<span class="function">json</span>()<br>
+                    <span class="keyword">print</span>(<span class="string">f"Pénétration: {data['derived']['penetration_depth_mm']:.2f} mm"</span>)<br>
+                    <span class="comment"># → Pénétration: 2.82 mm</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <div class="section-label">Fonctionnalités</div>
+            <h2 class="section-title">Tout pour la Biophotonique</h2>
+            <p class="section-subtitle">
+                Une API complète couvrant tous les aspects des calculs optiques en biologie
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🧬</div>
+                <h3 class="feature-title">Optogénétique</h3>
+                <p class="feature-desc">
+                    Calculez la puissance optimale pour activer ChR2, Chrimson, ou vos opsines préférées. 
+                    Base de données de 10 opsines avec seuils d'activation et cinétiques.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">ChR2</span>
+                    <span class="feature-tag">Chrimson</span>
+                    <span class="feature-tag">Power Calculator</span>
+                </div>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">💊</div>
+                <h3 class="feature-title">Dosimétrie PDT</h3>
+                <p class="feature-desc">
+                    Planification de traitements photodynamiques avec 8 photosensibilisants. 
+                    Calculs de fluence, dose PDT, et profondeur de traitement effectif.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">ALA</span>
+                    <span class="feature-tag">Foscan</span>
+                    <span class="feature-tag">Treatment Planning</span>
+                </div>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔬</div>
+                <h3 class="feature-title">Imagerie Calcique</h3>
+                <p class="feature-desc">
+                    9 indicateurs calciques avec spectres d'excitation/émission, Kd, et rapports dynamiques. 
+                    Parfait pour le design d'expériences de neuroimagerie.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">GCaMP8</span>
+                    <span class="feature-tag">jRGECO</span>
+                    <span class="feature-tag">Fluo-4</span>
+                </div>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🎲</div>
+                <h3 class="feature-title">Monte Carlo</h3>
+                <p class="feature-desc">
+                    Simulations stochastiques de propagation photonique. 
+                    Calculs de réflectance, transmittance, et distribution d'absorption en profondeur.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">Photon Tracking</span>
+                    <span class="feature-tag">Tissue Optics</span>
+                </div>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🫀</div>
+                <h3 class="feature-title">Oxymétrie</h3>
+                <p class="feature-desc">
+                    Calculs de saturation en oxygène tissulaire (StO2) à partir de mesures multi-longueurs d'onde. 
+                    Basé sur les spectres d'absorption de l'hémoglobine.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">StO2</span>
+                    <span class="feature-tag">HbO2/Hb</span>
+                    <span class="feature-tag">NIRS</span>
+                </div>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🌡️</div>
+                <h3 class="feature-title">Sécurité Thermique</h3>
+                <p class="feature-desc">
+                    Estimations de l'élévation de température pour éviter les dommages tissulaires. 
+                    Essentiel pour le design d'expériences optogénétiques sûres.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">ΔT Prediction</span>
+                    <span class="feature-tag">Safety Limits</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="section-header">
+            <div class="section-label">Tarification</div>
+            <h2 class="section-title">Un Plan pour Chaque Besoin</h2>
+            <p class="section-subtitle">
+                Du projet étudiant à l'industrie pharmaceutique
+            </p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Spark -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-emoji">🔬</div>
+                    <div class="pricing-name">Spark</div>
+                    <div class="pricing-tagline">Découverte & étudiants</div>
+                </div>
+                <div class="pricing-price">
+                    <div class="price-free">Gratuit</div>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">100 requêtes/jour</div>
+                    <div class="pricing-feature">10 simulations Monte Carlo/jour</div>
+                    <div class="pricing-feature">10 tissus de base</div>
+                    <div class="pricing-feature">Documentation complète</div>
+                    <div class="pricing-feature">Support communautaire</div>
+                </div>
+                <button class="pricing-btn primary" onclick="openModal('signup')">🚀 Obtenir ma clé API</button>
+            </div>
+
+            <!-- Photon -->
+            <!-- Photon -->
+            <div class="pricing-card">
+                <span class="coming-soon-badge">Bientôt</span>
+                <div class="pricing-header">
+                    <div class="pricing-emoji">💡</div>
+                    <div class="pricing-name">Photon</div>
+                    <div class="pricing-tagline">Doctorants & petits projets</div>
+                </div>
+                <div class="pricing-price">
+                    <span class="price-currency">€</span>
+                    <span class="price-value">29</span>
+                    <span class="price-period">/mois</span>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">2,000 requêtes/jour</div>
+                    <div class="pricing-feature">100 simulations Monte Carlo/jour</div>
+                    <div class="pricing-feature">35 tissus complets</div>
+                    <div class="pricing-feature">PDT Dosimetry inclus</div>
+                    <div class="pricing-feature">Support email</div>
+                    <div class="pricing-feature">-20% tarif académique</div>
+                </div>
+                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+            </div>
+
+            <!-- Beam -->
+            <div class="pricing-card">
+                <span class="coming-soon-badge">Bientôt</span>
+                <div class="pricing-header">
+                    <div class="pricing-emoji">🔦</div>
+                    <div class="pricing-name">Beam</div>
+                    <div class="pricing-tagline">Chercheurs académiques</div>
+                </div>
+                <div class="pricing-price">
+                    <span class="price-currency">€</span>
+                    <span class="price-value">99</span>
+                    <span class="price-period">/mois</span>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">15,000 requêtes/jour</div>
+                    <div class="pricing-feature">1,000 simulations Monte Carlo/jour</div>
+                    <div class="pricing-feature">Batch processing (100 items)</div>
+                    <div class="pricing-feature">API Analytics dashboard</div>
+                    <div class="pricing-feature">Support prioritaire</div>
+                    <div class="pricing-feature">-30% tarif académique</div>
+                </div>
+                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+            </div>
+
+            <!-- Laser -->
+            <div class="pricing-card">
+                <span class="coming-soon-badge">Bientôt</span>
+                <div class="pricing-header">
+                    <div class="pricing-emoji">⚡</div>
+                    <div class="pricing-name">Laser</div>
+                    <div class="pricing-tagline">Entreprises & startups</div>
+                </div>
+                <div class="pricing-price">
+                    <span class="price-currency">€</span>
+                    <span class="price-value">299</span>
+                    <span class="price-period">/mois</span>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">100,000 requêtes/jour</div>
+                    <div class="pricing-feature">10,000 simulations Monte Carlo/jour</div>
+                    <div class="pricing-feature">Tissus custom uploadables</div>
+                    <div class="pricing-feature">Batch processing (500 items)</div>
+                    <div class="pricing-feature">Support dédié</div>
+                    <div class="pricing-feature">Intégration sur mesure</div>
+                </div>
+                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+            </div>
+
+            <!-- Fusion -->
+            <div class="pricing-card">
+                <span class="coming-soon-badge">Bientôt</span>
+                <div class="pricing-header">
+                    <div class="pricing-emoji">🌟</div>
+                    <div class="pricing-name">Fusion</div>
+                    <div class="pricing-tagline">Pharma, hôpitaux, OEM</div>
+                </div>
+                <div class="pricing-price">
+                    <div class="price-custom">Sur devis</div>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">Requêtes illimitées</div>
+                    <div class="pricing-feature">Monte Carlo illimité + GPU</div>
+                    <div class="pricing-feature">Base de tissus custom</div>
+                    <div class="pricing-feature">Support dédié + SLA</div>
+                    <div class="pricing-feature">Déploiement on-premise</div>
+                    <div class="pricing-feature">Formation équipe incluse</div>
+                </div>
+                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Demo Section -->
+    <section class="api-demo" id="api">
+        <div class="section-header">
+            <div class="section-label">Essayez l'API</div>
+            <h2 class="section-title">Testez en Direct</h2>
+            <p class="section-subtitle">
+                Explorez les endpoints disponibles
+            </p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-endpoints">
+                <div class="endpoint-item active" onclick="selectEndpoint(this, 'tissue')">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/v2/tissues/{tissue_id}</span>
+                </div>
+                <div class="endpoint-item" onclick="selectEndpoint(this, 'opsin')">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/v2/optogenetics/opsins</span>
+                </div>
+                <div class="endpoint-item" onclick="selectEndpoint(this, 'power')">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/v2/optogenetics/power-calculator</span>
+                </div>
+                <div class="endpoint-item" onclick="selectEndpoint(this, 'pdt')">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/v2/pdt/photosensitizers</span>
+                </div>
+                <div class="endpoint-item" onclick="selectEndpoint(this, 'monte')">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/v2/monte-carlo/simulation</span>
+                </div>
+            </div>
+
+            <div class="demo-response">
+                <div class="response-header">
+                    <span>Response</span>
+                    <span class="status-badge">200 OK</span>
+                </div>
+                <div class="response-body" id="responseBody">
+<span class="comment">// Propriétés optiques du cerveau @ 630nm</span>
+{
+  "<span class="string">tissue_id</span>": "<span class="string">brain_gray_matter</span>",
+  "<span class="string">wavelength_nm</span>": <span class="number">630</span>,
+  "<span class="string">optical_properties</span>": {
+    "<span class="string">mu_a</span>": <span class="number">0.025</span>,
+    "<span class="string">mu_s_prime</span>": <span class="number">1.0</span>,
+    "<span class="string">g</span>": <span class="number">0.9</span>
+  },
+  "<span class="string">derived</span>": {
+    "<span class="string">penetration_depth_mm</span>": <span class="number">2.821</span>,
+    "<span class="string">mu_eff</span>": <span class="number">0.354</span>
+  }
+}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2 class="cta-title">Prêt à illuminer votre recherche ?</h2>
+            <p class="cta-subtitle">
+                Commencez gratuitement avec le plan Spark. Pas de carte bancaire requise.
+            </p>
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn-primary">
+                    <span>🚀</span>
+                    <span>Commencer Gratuitement</span>
+                </a>
+                <a href="/cdn-cgi/l/email-protection#b9dad6d7cdd8dacdf9dbd8d7d8cacddcdad1d7d6d5d6ded0dc97dad5d6ccdd" class="btn-secondary">
+                    <span>💬</span>
+                    <span>Discutons de votre projet</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>PhotonPath</span>
+            </div>
+            
+            <div class="footer-links">
+                <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank" class="footer-link">Documentation</a>
+                <a href="/cdn-cgi/l/email-protection#9ffcf0f1ebfefcebdffdfef1feecebfafcf7f1f0f3f0f8f6fab1fcf3f0eafb" class="footer-link">Contact</a>
+                <a href="#" class="footer-link" onclick="openModal('mentions')">Mentions légales</a>
+                <a href="#" class="footer-link" onclick="openModal('privacy')">Confidentialité</a>
+            </div>
+
+            <div class="footer-copyright">
+                © 2025 BanasTechnologie. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-mentions">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('mentions')">✕</button>
+            <h2 class="modal-title">Mentions Légales</h2>
+            <div class="modal-section">
+                <p><strong>Éditeur :</strong> Yann Banas<br>Email : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="661f0708084804070807152604070807151203050e08090a09010f0348050a091302">[email&#160;protected]</a></p>
+            </div>
+            <div class="modal-section">
+                <p><strong>Hébergement :</strong> Railway + OVH SAS, 2 rue Kellermann, 59100 Roubaix, France</p>
+            </div>
+            <div class="modal-section">
+                <p><strong>Directeur de publication :</strong> Yann Banas</p>
+            </div>
+            <div class="modal-section">
+                <p><strong>Contact :</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="debdb1b0aabfbdaa9ebcbfb0bfadaabbbdb6b0b1b2b1b9b7bbf0bdb2b1abba">[email&#160;protected]</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-privacy">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('privacy')">✕</button>
+            <h2 class="modal-title">Politique de Confidentialité</h2>
+            <div class="modal-section">
+                <p><strong>Données collectées :</strong> Email et informations de paiement pour les abonnements payants uniquement.</p>
+            </div>
+            <div class="modal-section">
+                <p><strong>Cookies :</strong> Aucun cookie de tracking. Cookies techniques uniquement pour l'authentification.</p>
+            </div>
+            <div class="modal-section">
+                <p><strong>Paiements :</strong> Gérés par Stripe. Nous ne stockons pas vos informations bancaires.</p>
+            </div>
+            <div class="modal-section">
+                <p><strong>Droits RGPD :</strong> Contactez <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a7975746e7b796e5a787b747b696e7f7972747576757d737f347976756f7e">[email&#160;protected]</a> pour exercer vos droits d'accès, rectification ou suppression.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Inscription -->
+    <div class="modal-overlay" id="modal-signup">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeModal('signup')">✕</button>
+            
+            <!-- Formulaire d'inscription -->
+            <div id="signup-form-container">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                    <h2 class="modal-title" style="margin-bottom: 0.5rem;">Obtenir votre clé API</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Plan Spark gratuit - 100 requêtes/jour</p>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Email</label>
+                    <input type="email" id="signup-email" placeholder="votre@email.com" 
+                           style="width: 100%; padding: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; color: var(--text-primary); font-size: 1rem; outline: none; transition: border-color 0.3s;"
+                           onfocus="this.style.borderColor='var(--accent-cyan)'" 
+                           onblur="this.style.borderColor='var(--border)'">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Pseudo</label>
+                    <input type="text" id="signup-name" placeholder="Votre pseudo" 
+                           style="width: 100%; padding: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; color: var(--text-primary); font-size: 1rem; outline: none; transition: border-color 0.3s;"
+                           onfocus="this.style.borderColor='var(--accent-cyan)'" 
+                           onblur="this.style.borderColor='var(--border)'">
+                </div>
+                
+                <button onclick="submitSignup()" id="signup-btn"
+                        style="width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); border: none; border-radius: 10px; color: var(--bg-primary); font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
+                    🔑 Créer mon compte
+                </button>
+                
+                <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+                    En créant un compte, vous acceptez nos <a href="#" onclick="closeModal('signup'); openModal('mentions');" style="color: var(--accent-cyan);">Mentions légales</a> 
+                    et notre <a href="#" onclick="closeModal('signup'); openModal('privacy');" style="color: var(--accent-cyan);">Politique de confidentialité</a>.
+                </p>
+            </div>
+            
+            <!-- Résultat (clé API) -->
+            <div id="signup-result" style="display: none;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                    <h2 class="modal-title" style="margin-bottom: 0.5rem;">Bienvenue !</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Votre compte a été créé avec succès</p>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(0, 255, 200, 0.1), rgba(139, 92, 246, 0.1)); border: 2px solid var(--accent-cyan); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔑 Votre Clé API</p>
+                    <p id="api-key-display" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-primary); background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; word-break: break-all; cursor: pointer;" onclick="copyApiKey()">
+                        <!-- Filled by JS -->
+                    </p>
+                    <p style="margin: 0.75rem 0 0 0; font-size: 0.75rem; color: var(--text-muted);">
+                        📋 Cliquez pour copier
+                    </p>
+                </div>
+                
+                <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">⚡ Quick Start</p>
+                    <code style="display: block; font-size: 0.8rem; color: var(--accent-emerald);">
+                        curl -H "X-API-Key: VOTRE_CLE" \<br>
+                        &nbsp;&nbsp;https://photonpath-api-production.up.railway.app/v2/tissues
+                    </code>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank"
+                       style="flex: 1; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); border: none; border-radius: 10px; color: var(--bg-primary); font-weight: 600; font-size: 0.9rem; text-align: center; text-decoration: none;">
+                        📖 Documentation
+                    </a>
+                    <button onclick="closeModal('signup'); resetSignupForm();"
+                            style="flex: 1; padding: 1rem; background: transparent; border: 2px solid var(--border-hover); border-radius: 10px; color: var(--text-primary); font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+                        Fermer
+                    </button>
+                </div>
+                
+                <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+                    📧 Un email de confirmation vous a été envoyé
+                </p>
+            </div>
+            
+            <!-- Erreur -->
+            <div id="signup-error" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 10px; padding: 1rem; margin-top: 1rem;">
+                <p style="margin: 0; color: #ef4444; font-size: 0.9rem;" id="error-message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CURSOR SYSTEM
+        // ============================================
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        const cursorGlow = document.querySelector('.cursor-glow');
+
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+        let glowX = 0, glowY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+
+            glowX += (mouseX - glowX) * 0.08;
+            glowY += (mouseY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover effects
+        document.querySelectorAll('a, button, input, textarea, .feature-card, .pricing-card, .endpoint-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorRing.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorRing.style.borderColor = 'var(--accent-pink)';
+                cursorDot.style.background = 'var(--accent-pink)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorRing.style.borderColor = 'var(--cursor-secondary)';
+                cursorDot.style.background = 'var(--cursor-primary)';
+            });
+        });
+
+        // ============================================
+        // PARTICLES
+        // ============================================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['var(--accent-cyan)', 'var(--accent-violet)', 'var(--accent-pink)', 'var(--accent-amber)', 'var(--accent-emerald)'];
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 6 + 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const left = Math.random() * 100;
+                const duration = Math.random() * 20 + 15;
+                const delay = Math.random() * 20;
+                
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    left: ${left}%;
+                    animation-duration: ${duration}s;
+                    animation-delay: -${delay}s;
+                    box-shadow: 0 0 ${size * 2}px ${color};
+                `;
+                
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ============================================
+        // NAVBAR SCROLL
+        // ============================================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // ============================================
+        // SCROLL ANIMATIONS
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ============================================
+        // API DEMO
+        // ============================================
+        const responses = {
+            tissue: `<span class="comment">// Propriétés optiques du cerveau @ 630nm</span>
+{
+  "<span class="string">tissue_id</span>": "<span class="string">brain_gray_matter</span>",
+  "<span class="string">wavelength_nm</span>": <span class="number">630</span>,
+  "<span class="string">optical_properties</span>": {
+    "<span class="string">mu_a</span>": <span class="number">0.025</span>,
+    "<span class="string">mu_s_prime</span>": <span class="number">1.0</span>
+  },
+  "<span class="string">derived</span>": {
+    "<span class="string">penetration_depth_mm</span>": <span class="number">2.821</span>
+  }
+}`,
+            opsin: `<span class="comment">// Liste des opsines disponibles</span>
+{
+  "<span class="string">count</span>": <span class="number">10</span>,
+  "<span class="string">opsins</span>": [
+    {"<span class="string">id</span>": "<span class="string">ChR2</span>", "<span class="string">peak_nm</span>": <span class="number">470</span>, "<span class="string">type</span>": "<span class="string">excitatory</span>"},
+    {"<span class="string">id</span>": "<span class="string">Chrimson</span>", "<span class="string">peak_nm</span>": <span class="number">590</span>, "<span class="string">type</span>": "<span class="string">excitatory</span>"},
+    {"<span class="string">id</span>": "<span class="string">NpHR</span>", "<span class="string">peak_nm</span>": <span class="number">590</span>, "<span class="string">type</span>": "<span class="string">inhibitory</span>"},
+    ...
+  ]
+}`,
+            power: `<span class="comment">// Calcul de puissance pour ChR2 @ 2mm</span>
+{
+  "<span class="string">opsin</span>": "<span class="string">ChR2</span>",
+  "<span class="string">target_depth_mm</span>": <span class="number">2</span>,
+  "<span class="string">calculation</span>": {
+    "<span class="string">required_power_mW</span>": <span class="number">16.58</span>,
+    "<span class="string">irradiance_at_target</span>": <span class="number">1.0</span>
+  },
+  "<span class="string">safety</span>": {
+    "<span class="string">temperature_rise_C</span>": <span class="number">0.22</span>,
+    "<span class="string">status</span>": "<span class="string">SAFE</span>"
+  }
+}`,
+            pdt: `<span class="comment">// Photosensibilisants PDT disponibles</span>
+{
+  "<span class="string">count</span>": <span class="number">8</span>,
+  "<span class="string">photosensitizers</span>": [
+    {"<span class="string">id</span>": "<span class="string">ALA</span>", "<span class="string">wavelength</span>": <span class="number">635</span>},
+    {"<span class="string">id</span>": "<span class="string">Foscan</span>", "<span class="string">wavelength</span>": <span class="number">652</span>},
+    {"<span class="string">id</span>": "<span class="string">Photofrin</span>", "<span class="string">wavelength</span>": <span class="number">630</span>},
+    ...
+  ]
+}`,
+            monte: `<span class="comment">// Simulation Monte Carlo (1000 photons)</span>
+{
+  "<span class="string">tissue_id</span>": "<span class="string">brain_gray_matter</span>",
+  "<span class="string">n_photons</span>": <span class="number">1000</span>,
+  "<span class="string">reflectance</span>": <span class="number">0.563</span>,
+  "<span class="string">transmittance</span>": <span class="number">0.043</span>,
+  "<span class="string">absorption_fraction</span>": <span class="number">0.394</span>,
+  "<span class="string">mc_penetration_mm</span>": <span class="number">3.52</span>,
+  "<span class="string">simulation_time_s</span>": <span class="number">6.92</span>
+}`
+        };
+
+        function selectEndpoint(el, type) {
+            document.querySelectorAll('.endpoint-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('responseBody').innerHTML = responses[type];
+        }
+
+        // ============================================
+        // CHECKOUT
+        // ============================================
+        function checkout(plan) {
+            // Redirect to checkout - replace with actual Stripe checkout URL
+            alert(`Redirection vers le checkout Stripe pour le plan ${plan}...\n\nNote: Intégration Stripe en cours de configuration.`);
+            // window.location.href = `/billing/checkout?plan=${plan}`;
+        }
+
+        // ============================================
+        // SIGNUP / API KEY
+        // ============================================
+        const API_BASE = 'https://photonpath-api-production.up.railway.app';
+        let currentApiKey = '';
+        let flashTimeout = null;
+
+        async function submitSignup() {
+            const email = document.getElementById('signup-email').value.trim();
+            const name = document.getElementById('signup-name').value.trim();
+            const btn = document.getElementById('signup-btn');
+            const errorDiv = document.getElementById('signup-error');
+            
+            // Reset error
+            errorDiv.style.display = 'none';
+            
+            // Validation
+            if (!email) {
+                showError('Veuillez entrer votre email');
+                return;
+            }
+            
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                showError('Email invalide');
+                return;
+            }
+            
+            // Loading state
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Création en cours...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/billing/customers`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        name: name || null
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.api_key) {
+                    // Success!
+                    currentApiKey = data.api_key;
+                    document.getElementById('api-key-display').textContent = data.api_key;
+                    document.getElementById('signup-form-container').style.display = 'none';
+                    document.getElementById('signup-result').style.display = 'block';
+                    
+                    // Show flash message
+                    showFlash();
+                } else {
+                    showError(data.detail || data.error || 'Erreur lors de la création du compte');
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                showError('Erreur de connexion. Veuillez réessayer.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🔑 Créer mon compte';
+            }
+        }
+
+        function showFlash() {
+            const flash = document.getElementById('flash-message');
+            
+            // Reset animation
+            const progress = flash.querySelector('.flash-progress');
+            progress.style.animation = 'none';
+            progress.offsetHeight; // Trigger reflow
+            progress.style.animation = 'progress 10s linear forwards';
+            
+            // Show flash
+            flash.classList.remove('hide');
+            flash.classList.add('show');
+            
+            // Auto-hide after 10 seconds
+            if (flashTimeout) clearTimeout(flashTimeout);
+            flashTimeout = setTimeout(() => {
+                hideFlash();
+            }, 10000);
+        }
+
+        function hideFlash() {
+            const flash = document.getElementById('flash-message');
+            flash.classList.remove('show');
+            flash.classList.add('hide');
+            if (flashTimeout) {
+                clearTimeout(flashTimeout);
+                flashTimeout = null;
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('signup-error');
+            document.getElementById('error-message').textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function copyApiKey() {
+            if (currentApiKey) {
+                navigator.clipboard.writeText(currentApiKey).then(() => {
+                    const display = document.getElementById('api-key-display');
+                    const originalText = display.textContent;
+                    display.textContent = '✅ Copié !';
+                    display.style.color = 'var(--accent-cyan)';
+                    setTimeout(() => {
+                        display.textContent = originalText;
+                        display.style.color = 'var(--text-primary)';
+                    }, 2000);
+                });
+            }
+        }
+
+        function resetSignupForm() {
+            document.getElementById('signup-email').value = '';
+            document.getElementById('signup-name').value = '';
+            document.getElementById('signup-form-container').style.display = 'block';
+            document.getElementById('signup-result').style.display = 'none';
+            document.getElementById('signup-error').style.display = 'none';
+            currentApiKey = '';
+        }
+
+        // ============================================
+        // MODALS
+        // ============================================
+        function openModal(type) {
+            document.getElementById(`modal-${type}`).classList.add('active');
+            document.getElementById(`modal-${type}`).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(type) {
+            document.getElementById(`modal-${type}`).classList.remove('active');
+            document.getElementById(`modal-${type}`).style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Close modal on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    modal.style.display = 'none';
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+                hideFlash();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
