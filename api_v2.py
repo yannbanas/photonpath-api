@@ -177,8 +177,6 @@ Use the `X-API-Key` header with your API key:
 curl -H "X-API-Key: your_api_key" "https://api.photonpath.io/v2/..."
 ```
 
-**Demo key for testing:** `demo_key_12345` (1000 requests/day)
-
 ---
 
 **Documentation:** [https://docs.photonpath.io](https://docs.photonpath.io)  
@@ -208,7 +206,6 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, 
 
 # API Keys
 API_KEYS = {
-    "demo_key_12345": {"user": "demo", "plan": "free", "limit": 1000, "used": 0},
     "pro_key_abcdef": {"user": "pro", "plan": "pro", "limit": 50000, "used": 0}
 }
 

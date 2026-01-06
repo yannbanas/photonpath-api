@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhotonPath - API Biophotonique pour la Recherche</title>
-    <meta name="description" content="API de calculs biophotoniques pour l'optogénétique, la dosimétrie PDT et l'imagerie calcique. 35 tissus, 10 opsines, simulations Monte Carlo.">
+    <title>PhotonPath - Biophotonics API for Research</title>
+    <meta name="description" content="Biophotonics calculation API for optogenetics, PDT dosimetry and calcium imaging. 35 tissues, 10 opsins, Monte Carlo simulations.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -301,7 +301,8 @@
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
             border: none;
             border-radius: 8px;
-            color: var(--bg-primary);
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
             font-size: 0.9rem;
@@ -311,7 +312,8 @@
 
         .nav-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--glow-cyan), var(--glow-violet);
+            box-shadow: 0 8px 25px rgba(0, 255, 200, 0.4), 0 0 15px rgba(139, 92, 246, 0.3);
+            color: #ffffff;
         }
 
         /* Mobile menu */
@@ -436,7 +438,8 @@
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
             border: none;
             border-radius: 12px;
-            color: var(--bg-primary);
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
             font-size: 1rem;
@@ -445,11 +448,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            box-shadow: 0 4px 20px rgba(0, 255, 200, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(0, 255, 200, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 255, 200, 0.4), 0 0 25px rgba(139, 92, 246, 0.3);
+            color: #ffffff;
         }
 
         .btn-secondary {
@@ -795,7 +800,14 @@
 
         .pricing-btn.primary {
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
-            color: var(--bg-primary);
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 255, 200, 0.3);
+        }
+
+        .pricing-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 200, 0.4), 0 0 20px rgba(139, 92, 246, 0.3);
         }
 
         .pricing-btn.secondary {
@@ -804,36 +816,40 @@
             color: var(--text-primary);
         }
 
-        .pricing-btn:hover {
+        .pricing-btn.secondary:hover {
             transform: translateY(-2px);
             box-shadow: var(--glow-cyan);
+            border-color: var(--accent-cyan);
         }
 
-        .pricing-btn.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            pointer-events: none;
+        .pricing-btn.coming-soon {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
         }
 
-        .coming-soon-badge {
+        .pricing-btn.coming-soon::before {
+            content: '';
             position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 0.4rem 0.8rem;
-            background: linear-gradient(135deg, var(--accent-amber), var(--accent-pink));
-            border-radius: 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--bg-primary);
-            text-transform: uppercase;
-            z-index: 10;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
         }
 
-        /* Désactiver le badge POPULAIRE quand Bientôt est présent */
-        .pricing-card.featured .coming-soon-badge ~ .pricing-header::before,
-        .pricing-card.featured:has(.coming-soon-badge)::before {
-            display: none;
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .pricing-btn.coming-soon:hover {
+            transform: none;
+            box-shadow: none;
+            cursor: default;
         }
 
         /* ============================================
@@ -1257,8 +1273,8 @@
     <div class="flash-message" id="flash-message">
         <span class="flash-icon">📧</span>
         <div class="flash-text">
-            <span class="flash-title">Email envoyé avec succès !</span>
-            <span class="flash-subtitle">Vérifiez votre boîte de réception pour votre clé API</span>
+            <span class="flash-title">Email sent successfully!</span>
+            <span class="flash-subtitle">Check your inbox for your API key</span>
         </div>
         <button class="flash-close" onclick="hideFlash()">✕</button>
         <div class="flash-progress"></div>
@@ -1285,7 +1301,7 @@
                 <a href="#pricing" class="nav-link">Pricing</a>
                 <a href="#api" class="nav-link">API</a>
                 <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank" class="nav-link">Documentation</a>
-                <a href="#pricing" class="nav-btn">Commencer</a>
+                <a href="#pricing" class="nav-btn">Get Started</a>
             </div>
 
             <button class="mobile-menu-btn" id="menuBtn">
@@ -1302,28 +1318,28 @@
         <div class="hero-content">
             <div class="hero-badge">
                 <span>🔬</span>
-                <span>API Biophotonique v2.0</span>
+                <span>Biophotonics API v2.0</span>
             </div>
             
-            <h1 class="hero-title">Calculs Biophotoniques<br>pour la Recherche</h1>
+            <h1 class="hero-title">Biophotonics Calculations<br>for Research</h1>
             
             <p class="hero-subtitle">
-                API REST pour l'optogénétique, la dosimétrie PDT, l'imagerie calcique et les simulations Monte Carlo. 
-                Intégrez des calculs de propagation lumineuse dans vos applications en quelques lignes de code.
+                REST API for optogenetics, PDT dosimetry, calcium imaging and Monte Carlo simulations. 
+                Integrate light propagation calculations into your applications with just a few lines of code.
             </p>
 
             <div class="hero-stats">
                 <div class="stat-item">
                     <div class="stat-value">35</div>
-                    <div class="stat-label">Tissus biologiques</div>
+                    <div class="stat-label">Biological tissues</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">10</div>
-                    <div class="stat-label">Opsines</div>
+                    <div class="stat-label">Opsins</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">8</div>
-                    <div class="stat-label">Photosensibilisants</div>
+                    <div class="stat-label">Photosensitizers</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">43</div>
@@ -1334,7 +1350,7 @@
             <div class="hero-buttons">
                 <a href="#pricing" class="btn-primary">
                     <span>🚀</span>
-                    <span>Essai Gratuit</span>
+                    <span>Free Trial</span>
                 </a>
                 <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank" class="btn-secondary">
                     <span>📖</span>
@@ -1352,14 +1368,17 @@
                 </div>
                 <div class="code-body">
                     <span class="keyword">import</span> requests<br><br>
-                    <span class="comment"># Calcul de pénétration lumineuse</span><br>
+                    <span class="variable">API_KEY</span> = <span class="string">"pk_your_api_key_here"</span><br>
+                    <span class="variable">BASE_URL</span> = <span class="string">"https://photonpath-api-production.up.railway.app"</span><br><br>
+                    <span class="comment"># Get optical properties of brain tissue at 630nm</span><br>
                     <span class="variable">response</span> = requests.<span class="function">get</span>(<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"https://photonpath-api.up.railway.app/v2/tissues/brain_gray_matter"</span>,<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;params={<span class="string">"wavelength"</span>: <span class="number">630</span>}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">f"{BASE_URL}/v2/tissues/brain_gray_matter"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;params={<span class="string">"wavelength"</span>: <span class="number">630</span>},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;headers={<span class="string">"X-API-Key"</span>: <span class="variable">API_KEY</span>}<br>
                     )<br><br>
                     <span class="variable">data</span> = response.<span class="function">json</span>()<br>
-                    <span class="keyword">print</span>(<span class="string">f"Pénétration: {data['derived']['penetration_depth_mm']:.2f} mm"</span>)<br>
-                    <span class="comment"># → Pénétration: 2.82 mm</span>
+                    <span class="keyword">print</span>(<span class="string">f"Penetration depth: {data['derived']['penetration_depth_mm']:.2f} mm"</span>)<br>
+                    <span class="comment"># → Penetration depth: 2.82 mm</span>
                 </div>
             </div>
         </div>
@@ -1368,20 +1387,20 @@
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="section-header">
-            <div class="section-label">Fonctionnalités</div>
-            <h2 class="section-title">Tout pour la Biophotonique</h2>
+            <div class="section-label">Features</div>
+            <h2 class="section-title">Everything for Biophotonics</h2>
             <p class="section-subtitle">
-                Une API complète couvrant tous les aspects des calculs optiques en biologie
+                A comprehensive API covering all aspects of optical calculations in biology
             </p>
         </div>
 
         <div class="features-grid">
             <div class="feature-card fade-in">
                 <div class="feature-icon">🧬</div>
-                <h3 class="feature-title">Optogénétique</h3>
+                <h3 class="feature-title">Optogenetics</h3>
                 <p class="feature-desc">
-                    Calculez la puissance optimale pour activer ChR2, Chrimson, ou vos opsines préférées. 
-                    Base de données de 10 opsines avec seuils d'activation et cinétiques.
+                    Calculate optimal power to activate ChR2, Chrimson, or your favorite opsins. 
+                    Database of 10 opsins with activation thresholds and kinetics.
                 </p>
                 <div class="feature-tags">
                     <span class="feature-tag">ChR2</span>
@@ -1392,10 +1411,10 @@
 
             <div class="feature-card fade-in">
                 <div class="feature-icon">💊</div>
-                <h3 class="feature-title">Dosimétrie PDT</h3>
+                <h3 class="feature-title">PDT Dosimetry</h3>
                 <p class="feature-desc">
-                    Planification de traitements photodynamiques avec 8 photosensibilisants. 
-                    Calculs de fluence, dose PDT, et profondeur de traitement effectif.
+                    Photodynamic therapy treatment planning with 8 photosensitizers. 
+                    Fluence calculations, PDT dose, and effective treatment depth.
                 </p>
                 <div class="feature-tags">
                     <span class="feature-tag">ALA</span>
@@ -1406,10 +1425,10 @@
 
             <div class="feature-card fade-in">
                 <div class="feature-icon">🔬</div>
-                <h3 class="feature-title">Imagerie Calcique</h3>
+                <h3 class="feature-title">Calcium Imaging</h3>
                 <p class="feature-desc">
-                    9 indicateurs calciques avec spectres d'excitation/émission, Kd, et rapports dynamiques. 
-                    Parfait pour le design d'expériences de neuroimagerie.
+                    9 calcium indicators with excitation/emission spectra, Kd, and dynamic ratios. 
+                    Perfect for neuroimaging experiment design.
                 </p>
                 <div class="feature-tags">
                     <span class="feature-tag">GCaMP8</span>
@@ -1422,8 +1441,8 @@
                 <div class="feature-icon">🎲</div>
                 <h3 class="feature-title">Monte Carlo</h3>
                 <p class="feature-desc">
-                    Simulations stochastiques de propagation photonique. 
-                    Calculs de réflectance, transmittance, et distribution d'absorption en profondeur.
+                    Stochastic simulations of photon propagation. 
+                    Reflectance, transmittance, and depth absorption distribution calculations.
                 </p>
                 <div class="feature-tags">
                     <span class="feature-tag">Photon Tracking</span>
@@ -1433,10 +1452,10 @@
 
             <div class="feature-card fade-in">
                 <div class="feature-icon">🫀</div>
-                <h3 class="feature-title">Oxymétrie</h3>
+                <h3 class="feature-title">Oximetry</h3>
                 <p class="feature-desc">
-                    Calculs de saturation en oxygène tissulaire (StO2) à partir de mesures multi-longueurs d'onde. 
-                    Basé sur les spectres d'absorption de l'hémoglobine.
+                    Tissue oxygen saturation (StO2) calculations from multi-wavelength measurements. 
+                    Based on hemoglobin absorption spectra.
                 </p>
                 <div class="feature-tags">
                     <span class="feature-tag">StO2</span>
@@ -1447,10 +1466,10 @@
 
             <div class="feature-card fade-in">
                 <div class="feature-icon">🌡️</div>
-                <h3 class="feature-title">Sécurité Thermique</h3>
+                <h3 class="feature-title">Thermal Safety</h3>
                 <p class="feature-desc">
-                    Estimations de l'élévation de température pour éviter les dommages tissulaires. 
-                    Essentiel pour le design d'expériences optogénétiques sûres.
+                    Temperature rise estimates to prevent tissue damage. 
+                    Essential for safe optogenetic experiment design.
                 </p>
                 <div class="feature-tags">
                     <span class="feature-tag">ΔT Prediction</span>
@@ -1463,10 +1482,10 @@
     <!-- Pricing Section -->
     <section class="pricing" id="pricing">
         <div class="section-header">
-            <div class="section-label">Tarification</div>
-            <h2 class="section-title">Un Plan pour Chaque Besoin</h2>
+            <div class="section-label">Pricing</div>
+            <h2 class="section-title">A Plan for Every Need</h2>
             <p class="section-subtitle">
-                Du projet étudiant à l'industrie pharmaceutique
+                From student projects to research laboratories
             </p>
         </div>
 
@@ -1476,114 +1495,88 @@
                 <div class="pricing-header">
                     <div class="pricing-emoji">🔬</div>
                     <div class="pricing-name">Spark</div>
-                    <div class="pricing-tagline">Découverte & étudiants</div>
+                    <div class="pricing-tagline">Discovery & students</div>
                 </div>
                 <div class="pricing-price">
-                    <div class="price-free">Gratuit</div>
+                    <div class="price-free">Free</div>
                 </div>
                 <div class="pricing-features">
-                    <div class="pricing-feature">100 requêtes/jour</div>
-                    <div class="pricing-feature">10 simulations Monte Carlo/jour</div>
-                    <div class="pricing-feature">10 tissus de base</div>
-                    <div class="pricing-feature">Documentation complète</div>
-                    <div class="pricing-feature">Support communautaire</div>
+                    <div class="pricing-feature">100 requests/day</div>
+                    <div class="pricing-feature">10 Monte Carlo simulations/day</div>
+                    <div class="pricing-feature">10 basic tissues</div>
+                    <div class="pricing-feature">Full documentation</div>
+                    <div class="pricing-feature">Community support</div>
                 </div>
-                <button class="pricing-btn primary" onclick="openModal('signup')">🚀 Obtenir ma clé API</button>
+                <button class="pricing-btn primary" onclick="openModal('signup')">🚀 Get my API key</button>
             </div>
 
             <!-- Photon -->
-            <!-- Photon -->
             <div class="pricing-card">
-                <span class="coming-soon-badge">Bientôt</span>
                 <div class="pricing-header">
                     <div class="pricing-emoji">💡</div>
                     <div class="pricing-name">Photon</div>
-                    <div class="pricing-tagline">Doctorants & petits projets</div>
+                    <div class="pricing-tagline">PhD students & small projects</div>
                 </div>
                 <div class="pricing-price">
                     <span class="price-currency">€</span>
                     <span class="price-value">29</span>
-                    <span class="price-period">/mois</span>
+                    <span class="price-period">/month</span>
                 </div>
                 <div class="pricing-features">
-                    <div class="pricing-feature">2,000 requêtes/jour</div>
-                    <div class="pricing-feature">100 simulations Monte Carlo/jour</div>
-                    <div class="pricing-feature">35 tissus complets</div>
-                    <div class="pricing-feature">PDT Dosimetry inclus</div>
-                    <div class="pricing-feature">Support email</div>
-                    <div class="pricing-feature">-20% tarif académique</div>
+                    <div class="pricing-feature">2,000 requests/day</div>
+                    <div class="pricing-feature">100 Monte Carlo simulations/day</div>
+                    <div class="pricing-feature">35 complete tissues</div>
+                    <div class="pricing-feature">PDT Dosimetry included</div>
+                    <div class="pricing-feature">Email support</div>
+                    <div class="pricing-feature">-20% academic discount</div>
                 </div>
-                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+                <button class="pricing-btn coming-soon">🔮 Coming Soon</button>
             </div>
 
             <!-- Beam -->
             <div class="pricing-card">
-                <span class="coming-soon-badge">Bientôt</span>
                 <div class="pricing-header">
                     <div class="pricing-emoji">🔦</div>
                     <div class="pricing-name">Beam</div>
-                    <div class="pricing-tagline">Chercheurs académiques</div>
+                    <div class="pricing-tagline">Academic researchers</div>
                 </div>
                 <div class="pricing-price">
                     <span class="price-currency">€</span>
                     <span class="price-value">99</span>
-                    <span class="price-period">/mois</span>
+                    <span class="price-period">/month</span>
                 </div>
                 <div class="pricing-features">
-                    <div class="pricing-feature">15,000 requêtes/jour</div>
-                    <div class="pricing-feature">1,000 simulations Monte Carlo/jour</div>
+                    <div class="pricing-feature">15,000 requests/day</div>
+                    <div class="pricing-feature">1,000 Monte Carlo simulations/day</div>
                     <div class="pricing-feature">Batch processing (100 items)</div>
                     <div class="pricing-feature">API Analytics dashboard</div>
-                    <div class="pricing-feature">Support prioritaire</div>
-                    <div class="pricing-feature">-30% tarif académique</div>
+                    <div class="pricing-feature">Priority support</div>
+                    <div class="pricing-feature">-30% academic discount</div>
                 </div>
-                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+                <button class="pricing-btn coming-soon">🔮 Coming Soon</button>
             </div>
 
             <!-- Laser -->
             <div class="pricing-card">
-                <span class="coming-soon-badge">Bientôt</span>
                 <div class="pricing-header">
                     <div class="pricing-emoji">⚡</div>
                     <div class="pricing-name">Laser</div>
-                    <div class="pricing-tagline">Entreprises & startups</div>
+                    <div class="pricing-tagline">Companies & startups</div>
                 </div>
                 <div class="pricing-price">
                     <span class="price-currency">€</span>
                     <span class="price-value">299</span>
-                    <span class="price-period">/mois</span>
+                    <span class="price-period">/month</span>
                 </div>
                 <div class="pricing-features">
-                    <div class="pricing-feature">100,000 requêtes/jour</div>
-                    <div class="pricing-feature">10,000 simulations Monte Carlo/jour</div>
-                    <div class="pricing-feature">Tissus custom uploadables</div>
+                    <div class="pricing-feature">100,000 requests/day</div>
+                    <div class="pricing-feature">10,000 Monte Carlo simulations/day</div>
+                    <div class="pricing-feature">Custom tissue uploads</div>
                     <div class="pricing-feature">Batch processing (500 items)</div>
-                    <div class="pricing-feature">Support dédié</div>
-                    <div class="pricing-feature">Intégration sur mesure</div>
+                    <div class="pricing-feature">Dedicated support</div>
+                    <div class="pricing-feature">Custom integration</div>
                 </div>
-                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
-            </div>
-
-            <!-- Fusion -->
-            <div class="pricing-card">
-                <span class="coming-soon-badge">Bientôt</span>
-                <div class="pricing-header">
-                    <div class="pricing-emoji">🌟</div>
-                    <div class="pricing-name">Fusion</div>
-                    <div class="pricing-tagline">Pharma, hôpitaux, OEM</div>
-                </div>
-                <div class="pricing-price">
-                    <div class="price-custom">Sur devis</div>
-                </div>
-                <div class="pricing-features">
-                    <div class="pricing-feature">Requêtes illimitées</div>
-                    <div class="pricing-feature">Monte Carlo illimité + GPU</div>
-                    <div class="pricing-feature">Base de tissus custom</div>
-                    <div class="pricing-feature">Support dédié + SLA</div>
-                    <div class="pricing-feature">Déploiement on-premise</div>
-                    <div class="pricing-feature">Formation équipe incluse</div>
-                </div>
-                <button class="pricing-btn secondary disabled">Bientôt disponible</button>
+                <button class="pricing-btn coming-soon">🔮 Coming Soon</button>
             </div>
         </div>
     </section>
@@ -1591,10 +1584,10 @@
     <!-- API Demo Section -->
     <section class="api-demo" id="api">
         <div class="section-header">
-            <div class="section-label">Essayez l'API</div>
-            <h2 class="section-title">Testez en Direct</h2>
+            <div class="section-label">Try the API</div>
+            <h2 class="section-title">Live Demo</h2>
             <p class="section-subtitle">
-                Explorez les endpoints disponibles
+                Explore available endpoints
             </p>
         </div>
 
@@ -1618,7 +1611,7 @@
                 </div>
                 <div class="endpoint-item" onclick="selectEndpoint(this, 'monte')">
                     <span class="method post">POST</span>
-                    <span class="endpoint-path">/v2/monte-carlo/simulation</span>
+                    <span class="endpoint-path">/v2/simulate</span>
                 </div>
             </div>
 
@@ -1628,7 +1621,7 @@
                     <span class="status-badge">200 OK</span>
                 </div>
                 <div class="response-body" id="responseBody">
-<span class="comment">// Propriétés optiques du cerveau @ 630nm</span>
+<span class="comment">// Brain optical properties @ 630nm</span>
 {
   "<span class="string">tissue_id</span>": "<span class="string">brain_gray_matter</span>",
   "<span class="string">wavelength_nm</span>": <span class="number">630</span>,
@@ -1650,18 +1643,18 @@
     <!-- CTA Section -->
     <section class="cta">
         <div class="cta-content">
-            <h2 class="cta-title">Prêt à illuminer votre recherche ?</h2>
+            <h2 class="cta-title">Ready to illuminate your research?</h2>
             <p class="cta-subtitle">
-                Commencez gratuitement avec le plan Spark. Pas de carte bancaire requise.
+                Start free with the Spark plan. No credit card required.
             </p>
             <div class="hero-buttons">
                 <a href="#pricing" class="btn-primary">
                     <span>🚀</span>
-                    <span>Commencer Gratuitement</span>
+                    <span>Get Started Free</span>
                 </a>
-                <a href="/cdn-cgi/l/email-protection#b9dad6d7cdd8dacdf9dbd8d7d8cacddcdad1d7d6d5d6ded0dc97dad5d6ccdd" class="btn-secondary">
+                <a href="mailto:contact@banastechnologie.cloud" class="btn-secondary">
                     <span>💬</span>
-                    <span>Discutons de votre projet</span>
+                    <span>Let's discuss your project</span>
                 </a>
             </div>
         </div>
@@ -1677,13 +1670,13 @@
             
             <div class="footer-links">
                 <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank" class="footer-link">Documentation</a>
-                <a href="/cdn-cgi/l/email-protection#9ffcf0f1ebfefcebdffdfef1feecebfafcf7f1f0f3f0f8f6fab1fcf3f0eafb" class="footer-link">Contact</a>
-                <a href="#" class="footer-link" onclick="openModal('mentions')">Mentions légales</a>
-                <a href="#" class="footer-link" onclick="openModal('privacy')">Confidentialité</a>
+                <a href="mailto:contact@banastechnologie.cloud" class="footer-link">Contact</a>
+                <a href="#" class="footer-link" onclick="openModal('mentions')">Legal Notice</a>
+                <a href="#" class="footer-link" onclick="openModal('privacy')">Privacy</a>
             </div>
 
             <div class="footer-copyright">
-                © 2025 BanasTechnologie. Tous droits réservés.
+                © 2025 BanasTechnologie. All rights reserved.
             </div>
         </div>
     </footer>
@@ -1692,18 +1685,18 @@
     <div class="modal-overlay" id="modal-mentions">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('mentions')">✕</button>
-            <h2 class="modal-title">Mentions Légales</h2>
+            <h2 class="modal-title">Legal Notice</h2>
             <div class="modal-section">
-                <p><strong>Éditeur :</strong> Yann Banas<br>Email : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="661f0708084804070807152604070807151203050e08090a09010f0348050a091302">[email&#160;protected]</a></p>
+                <p><strong>Publisher:</strong> Yann Banas<br>Email: contact@banastechnologie.cloud</p>
             </div>
             <div class="modal-section">
-                <p><strong>Hébergement :</strong> Railway + OVH SAS, 2 rue Kellermann, 59100 Roubaix, France</p>
+                <p><strong>Hosting:</strong> Railway + OVH SAS, 2 rue Kellermann, 59100 Roubaix, France</p>
             </div>
             <div class="modal-section">
-                <p><strong>Directeur de publication :</strong> Yann Banas</p>
+                <p><strong>Publication Director:</strong> Yann Banas</p>
             </div>
             <div class="modal-section">
-                <p><strong>Contact :</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="debdb1b0aabfbdaa9ebcbfb0bfadaabbbdb6b0b1b2b1b9b7bbf0bdb2b1abba">[email&#160;protected]</a></p>
+                <p><strong>Contact:</strong> contact@banastechnologie.cloud</p>
             </div>
         </div>
     </div>
@@ -1711,105 +1704,105 @@
     <div class="modal-overlay" id="modal-privacy">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('privacy')">✕</button>
-            <h2 class="modal-title">Politique de Confidentialité</h2>
+            <h2 class="modal-title">Privacy Policy</h2>
             <div class="modal-section">
-                <p><strong>Données collectées :</strong> Email et informations de paiement pour les abonnements payants uniquement.</p>
+                <p><strong>Data collected:</strong> Email and payment information for paid subscriptions only.</p>
             </div>
             <div class="modal-section">
-                <p><strong>Cookies :</strong> Aucun cookie de tracking. Cookies techniques uniquement pour l'authentification.</p>
+                <p><strong>Cookies:</strong> No tracking cookies. Technical cookies only for authentication.</p>
             </div>
             <div class="modal-section">
-                <p><strong>Paiements :</strong> Gérés par Stripe. Nous ne stockons pas vos informations bancaires.</p>
+                <p><strong>Payments:</strong> Handled by Stripe. We do not store your banking information.</p>
             </div>
             <div class="modal-section">
-                <p><strong>Droits RGPD :</strong> Contactez <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a7975746e7b796e5a787b747b696e7f7972747576757d737f347976756f7e">[email&#160;protected]</a> pour exercer vos droits d'accès, rectification ou suppression.</p>
+                <p><strong>GDPR Rights:</strong> Contact contact@banastechnologie.cloud to exercise your access, rectification or deletion rights.</p>
             </div>
         </div>
     </div>
 
-    <!-- Modal Inscription -->
+    <!-- Signup Modal -->
     <div class="modal-overlay" id="modal-signup">
         <div class="modal-content" style="max-width: 500px;">
             <button class="modal-close" onclick="closeModal('signup')">✕</button>
             
-            <!-- Formulaire d'inscription -->
+            <!-- Signup Form -->
             <div id="signup-form-container">
                 <div style="text-align: center; margin-bottom: 2rem;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
-                    <h2 class="modal-title" style="margin-bottom: 0.5rem;">Obtenir votre clé API</h2>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Plan Spark gratuit - 100 requêtes/jour</p>
+                    <h2 class="modal-title" style="margin-bottom: 0.5rem;">Get your API key</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Free Spark plan - 100 requests/day</p>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Email</label>
-                    <input type="email" id="signup-email" placeholder="votre@email.com" 
+                    <input type="email" id="signup-email" placeholder="your@email.com" 
                            style="width: 100%; padding: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; color: var(--text-primary); font-size: 1rem; outline: none; transition: border-color 0.3s;"
                            onfocus="this.style.borderColor='var(--accent-cyan)'" 
                            onblur="this.style.borderColor='var(--border)'">
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Pseudo</label>
-                    <input type="text" id="signup-name" placeholder="Votre pseudo" 
+                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Username (optional)</label>
+                    <input type="text" id="signup-name" placeholder="Your username" 
                            style="width: 100%; padding: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; color: var(--text-primary); font-size: 1rem; outline: none; transition: border-color 0.3s;"
                            onfocus="this.style.borderColor='var(--accent-cyan)'" 
                            onblur="this.style.borderColor='var(--border)'">
                 </div>
                 
                 <button onclick="submitSignup()" id="signup-btn"
-                        style="width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); border: none; border-radius: 10px; color: var(--bg-primary); font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
-                    🔑 Créer mon compte
+                        style="width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); border: none; border-radius: 10px; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
+                    🔑 Create my account
                 </button>
                 
                 <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
-                    En créant un compte, vous acceptez nos <a href="#" onclick="closeModal('signup'); openModal('mentions');" style="color: var(--accent-cyan);">Mentions légales</a> 
-                    et notre <a href="#" onclick="closeModal('signup'); openModal('privacy');" style="color: var(--accent-cyan);">Politique de confidentialité</a>.
+                    By creating an account, you agree to our <a href="#" onclick="closeModal('signup'); openModal('mentions');" style="color: var(--accent-cyan);">Legal Notice</a> 
+                    and <a href="#" onclick="closeModal('signup'); openModal('privacy');" style="color: var(--accent-cyan);">Privacy Policy</a>.
                 </p>
             </div>
             
-            <!-- Résultat (clé API) -->
+            <!-- Result (API key) -->
             <div id="signup-result" style="display: none;">
                 <div style="text-align: center; margin-bottom: 2rem;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
-                    <h2 class="modal-title" style="margin-bottom: 0.5rem;">Bienvenue !</h2>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Votre compte a été créé avec succès</p>
+                    <h2 class="modal-title" style="margin-bottom: 0.5rem;">Welcome!</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Your account has been created successfully</p>
                 </div>
                 
                 <div style="background: linear-gradient(135deg, rgba(0, 255, 200, 0.1), rgba(139, 92, 246, 0.1)); border: 2px solid var(--accent-cyan); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                    <p style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔑 Votre Clé API</p>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔑 Your API Key</p>
                     <p id="api-key-display" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-primary); background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; word-break: break-all; cursor: pointer;" onclick="copyApiKey()">
                         <!-- Filled by JS -->
                     </p>
                     <p style="margin: 0.75rem 0 0 0; font-size: 0.75rem; color: var(--text-muted);">
-                        📋 Cliquez pour copier
+                        📋 Click to copy
                     </p>
                 </div>
                 
                 <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 1rem; margin-bottom: 1.5rem;">
                     <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">⚡ Quick Start</p>
                     <code style="display: block; font-size: 0.8rem; color: var(--accent-emerald);">
-                        curl -H "X-API-Key: VOTRE_CLE" \<br>
+                        curl -H "X-API-Key: YOUR_KEY" \<br>
                         &nbsp;&nbsp;https://photonpath-api-production.up.railway.app/v2/tissues
                     </code>
                 </div>
                 
                 <div style="display: flex; gap: 1rem;">
                     <a href="https://photonpath-api-production.up.railway.app/docs" target="_blank"
-                       style="flex: 1; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); border: none; border-radius: 10px; color: var(--bg-primary); font-weight: 600; font-size: 0.9rem; text-align: center; text-decoration: none;">
+                       style="flex: 1; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet)); border: none; border-radius: 10px; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); font-weight: 600; font-size: 0.9rem; text-align: center; text-decoration: none;">
                         📖 Documentation
                     </a>
                     <button onclick="closeModal('signup'); resetSignupForm();"
                             style="flex: 1; padding: 1rem; background: transparent; border: 2px solid var(--border-hover); border-radius: 10px; color: var(--text-primary); font-weight: 600; font-size: 0.9rem; cursor: pointer;">
-                        Fermer
+                        Close
                     </button>
                 </div>
                 
                 <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
-                    📧 Un email de confirmation vous a été envoyé
+                    📧 A confirmation email has been sent
                 </p>
             </div>
             
-            <!-- Erreur -->
+            <!-- Error -->
             <div id="signup-error" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 10px; padding: 1rem; margin-top: 1rem;">
                 <p style="margin: 0; color: #ef4444; font-size: 0.9rem;" id="error-message"></p>
             </div>
@@ -1939,7 +1932,7 @@
         // API DEMO
         // ============================================
         const responses = {
-            tissue: `<span class="comment">// Propriétés optiques du cerveau @ 630nm</span>
+            tissue: `<span class="comment">// Brain optical properties @ 630nm</span>
 {
   "<span class="string">tissue_id</span>": "<span class="string">brain_gray_matter</span>",
   "<span class="string">wavelength_nm</span>": <span class="number">630</span>,
@@ -1951,7 +1944,7 @@
     "<span class="string">penetration_depth_mm</span>": <span class="number">2.821</span>
   }
 }`,
-            opsin: `<span class="comment">// Liste des opsines disponibles</span>
+            opsin: `<span class="comment">// Available opsins list</span>
 {
   "<span class="string">count</span>": <span class="number">10</span>,
   "<span class="string">opsins</span>": [
@@ -1961,7 +1954,7 @@
     ...
   ]
 }`,
-            power: `<span class="comment">// Calcul de puissance pour ChR2 @ 2mm</span>
+            power: `<span class="comment">// Power calculation for ChR2 @ 2mm depth</span>
 {
   "<span class="string">opsin</span>": "<span class="string">ChR2</span>",
   "<span class="string">target_depth_mm</span>": <span class="number">2</span>,
@@ -1974,7 +1967,7 @@
     "<span class="string">status</span>": "<span class="string">SAFE</span>"
   }
 }`,
-            pdt: `<span class="comment">// Photosensibilisants PDT disponibles</span>
+            pdt: `<span class="comment">// Available PDT photosensitizers</span>
 {
   "<span class="string">count</span>": <span class="number">8</span>,
   "<span class="string">photosensitizers</span>": [
@@ -1984,7 +1977,7 @@
     ...
   ]
 }`,
-            monte: `<span class="comment">// Simulation Monte Carlo (1000 photons)</span>
+            monte: `<span class="comment">// Monte Carlo simulation (1000 photons)</span>
 {
   "<span class="string">tissue_id</span>": "<span class="string">brain_gray_matter</span>",
   "<span class="string">n_photons</span>": <span class="number">1000</span>,
@@ -2007,7 +2000,7 @@
         // ============================================
         function checkout(plan) {
             // Redirect to checkout - replace with actual Stripe checkout URL
-            alert(`Redirection vers le checkout Stripe pour le plan ${plan}...\n\nNote: Intégration Stripe en cours de configuration.`);
+            alert(`Redirecting to Stripe checkout for ${plan} plan...\n\nNote: Stripe integration in progress.`);
             // window.location.href = `/billing/checkout?plan=${plan}`;
         }
 
@@ -2029,18 +2022,18 @@
             
             // Validation
             if (!email) {
-                showError('Veuillez entrer votre email');
+                showError('Please enter your email');
                 return;
             }
             
             if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                showError('Email invalide');
+                showError('Invalid email');
                 return;
             }
             
             // Loading state
             btn.disabled = true;
-            btn.innerHTML = '⏳ Création en cours...';
+            btn.innerHTML = '⏳ Creating...';
             
             try {
                 const response = await fetch(`${API_BASE}/billing/customers`, {
@@ -2066,14 +2059,14 @@
                     // Show flash message
                     showFlash();
                 } else {
-                    showError(data.detail || data.error || 'Erreur lors de la création du compte');
+                    showError(data.detail || data.error || 'Error creating account');
                 }
             } catch (error) {
                 console.error('Signup error:', error);
-                showError('Erreur de connexion. Veuillez réessayer.');
+                showError('Connection error. Please try again.');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '🔑 Créer mon compte';
+                btn.innerHTML = '🔑 Create my account';
             }
         }
 
@@ -2118,7 +2111,7 @@
                 navigator.clipboard.writeText(currentApiKey).then(() => {
                     const display = document.getElementById('api-key-display');
                     const originalText = display.textContent;
-                    display.textContent = '✅ Copié !';
+                    display.textContent = '✅ Copied!';
                     display.style.color = 'var(--accent-cyan)';
                     setTimeout(() => {
                         display.textContent = originalText;
