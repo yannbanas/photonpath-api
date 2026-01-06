@@ -161,26 +161,26 @@ API_DESCRIPTION = """
 
 ```bash
 # Get tissue properties
-curl "https://api.photonpath.io/v2/tissues/brain_gray_matter?wavelength=630"
+curl "https://photonpath-api-production.up.railway.app/v2/tissues/brain_gray_matter?wavelength=630"
 
 # Calculate optogenetics power
-curl "https://api.photonpath.io/v2/optogenetics/power-calculator?opsin_id=ChR2&target_depth_mm=2"
+curl "https://photonpath-api-production.up.railway.app/v2/optogenetics/power-calculator?opsin_id=ChR2&target_depth_mm=2"
 
 # Generate PDT treatment plan
-curl -X POST "https://api.photonpath.io/v2/pdt/treatment-plan?indication=actinic_keratosis"
+curl -X POST "https://photonpath-api-production.up.railway.app/v2/pdt/treatment-plan?indication=actinic_keratosis"
 ```
 
 ### Authentication
 
 Use the `X-API-Key` header with your API key:
 ```bash
-curl -H "X-API-Key: your_api_key" "https://api.photonpath.io/v2/..."
+curl -H "X-API-Key: your_api_key" "https://photonpath-api-production.up.railway.app/v2/..."
 ```
 
 ---
 
-**Documentation:** [https://docs.photonpath.io](https://docs.photonpath.io)  
-**Support:** support@photonpath.io  
+**Documentation:** [https://photonpath-api-production.up.railway.app/docs](https://photonpath-api-production.up.railway.app/docs)  
+**Support:** contact@banastechnologie.cloud  
 **Version:** 2.0.0
 """
 
@@ -193,12 +193,12 @@ app = FastAPI(
     openapi_tags=tags_metadata,
     contact={
         "name": "PhotonPath Support",
-        "email": "support@photonpath.io",
-        "url": "https://photonpath.io"
+        "email": "contact@banastechnologie.cloud",
+        "url": "https://photonpath-api-production.up.railway.app"
     },
     license_info={
         "name": "Commercial License",
-        "url": "https://photonpath.io/license"
+        "url": "https://photonpath-api-production.up.railway.app/license"
     }
 )
 
