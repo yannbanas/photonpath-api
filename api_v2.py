@@ -8,6 +8,8 @@ Version: 2.0.0
 
 from fastapi import FastAPI, HTTPException, Depends, Header, Query, Response, Body
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
@@ -250,14 +252,20 @@ class Species(str, Enum):
 # INFO ENDPOINTS
 # ============================================================================
 
-@app.get("/", tags=["Info"])
-async def root():
+# Landing page à la racine
+@app.get("/", response_class=FileResponse, include_in_schema=False)
+async def serve_landing():
+    if os.path.exists("index.html"):
+        return FileResponse("index.html")
+    return {"name": "PhotonPath API", "version": "2.0.0", "docs": "/docs"}
+
+# Info API sur /api
+@app.get("/api", tags=["Info"])
+async def api_info():
     return {
         "name": "PhotonPath API",
-        "version": "2.0.0",
-        "docs": "/docs",
-        "demo_key": "demo_key_12345",
-        "endpoints": ["/v2/tissues", "/v2/optogenetics", "/v2/calcium", "/v2/thermal", "/v2/fiber", "/v2/protocols"]
+        "version": "2.0.0", 
+        "docs": "/docs"
     }
 
 @app.get("/health", tags=["Info"])
