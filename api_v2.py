@@ -9,7 +9,7 @@ Version: 2.0.0
 from fastapi import FastAPI, HTTPException, Depends, Header, Query, Response, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
@@ -253,11 +253,12 @@ class Species(str, Enum):
 # ============================================================================
 
 # Landing page à la racine
-@app.get("/", response_class=FileResponse, include_in_schema=False)
+@app.get("/", include_in_schema=False)
 async def serve_landing():
     if os.path.exists("index.html"):
         return FileResponse("index.html")
-    return {"name": "PhotonPath API", "version": "2.0.0", "docs": "/docs"}
+    # Fallback JSON si pas de fichier HTML
+    return JSONResponse({"name": "PhotonPath API", "version": "2.0.0", "docs": "/docs"})
 
 # Info API sur /api
 @app.get("/api", tags=["Info"])
